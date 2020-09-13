@@ -1,0 +1,61 @@
+#
+
+landuse=allotments [0x4e resolution 21]
+landuse=basin [0x3f resolution 21]
+landuse=cemetery 
+	| landuse=cemetary 
+	| amenity=grave_yard [0x1a resolution 21]
+landuse=commercial [0x10f0b resolution 22]
+landuse=construction 
+	| landuse=brownfield 
+	| landuse=greenfield [0x10f10 resolution 21]
+landuse=farm 
+	| landuse=farmland 
+	| landuse=greenhouse_horticulture [0x10f00 resolution 21]
+# landuse=farmyard [0x4e resolution 21]
+landuse=forest | landuse=wood [0x15 resolution 21]
+# landuse=greenfield [0x17 resolution 21]
+landuse=meadow | landuse=grass [0x18 resolution 21]
+landuse=military [0x04 resolution 21 continue]
+landuse=recreation_ground [0x15 resolution 21]
+# dedicate resolution 24 for building=* instead of related landuse=*
+landuse=industrial 
+	| landuse=depot 
+	| landuse=port 
+	| (landuse=harbour & leisure!=marina)
+	| industrial=port 
+	| power=station 
+	| power=substation 
+	| power=plant 
+	| (power=generator & building!=yes) [0x0c resolution 21]
+
+landuse=railway [0x10909 resolution 21]
+landuse=residential [0x10 resolution 21]
+landuse=retail & building!=* [0x08 resolution 21]
+landuse=village_green [0x17 resolution 21]
+landuse=orchard 
+	| landuse=plant_nursery 
+	| landuse=farmyard [0x4e resolution 21]
+landuse=landfill [0x0f resolution 21]
+landuse=religious [0x10f0c resolution 21]
+
+# Виноградники
+landuse=vineyard [0x1b resolution 21]
+
+# Торфоразработки
+landuse=peat_cutting | (landuse=quarry & resource=peat) [0x10102 resolution 21]
+
+landuse=quarry | man_made=mine [0x0c resolution 21]
+
+# защита от противоречивых тегов landuse= и natural= (пример - Рыбинка)
+((landuse=reservoir & natural!=*) | (natural=water & water=reservoir)) [0x3f resolution 18]
+
+landuse=salt_pond | wetland=saltern [0x51 resolution 21]
+
+landuse=garages [0x06 resolution 24]
+
+military=airfield [0x07 resolution 18]
+# military=barracks [0x04 resolution 18]
+military=barracks & landuse!=* [0x13 resolution 24]
+military=danger_area [0x04 resolution 18]
+military=range [0x04 resolution 18]

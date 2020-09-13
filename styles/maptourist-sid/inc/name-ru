@@ -1,0 +1,179 @@
+####
+#### Названия и переводы для русского языка
+####
+
+# Перевод тега sport
+sport ~ '.*(american_football).*' {set sport='регби'}
+sport ~ '.*(rugby_union).*' {set sport='регби'}
+sport ~ '.*(rugby_league).*' {set sport='регби'}
+sport ~ '.*(athletics).*' {set sport='атлетика'}
+sport ~ '.*(archery).*' {set sport='стрельба из лука'}
+sport ~ '.*(badminton).*' {set sport='бадминтон'}
+sport ~ '.*(baseball).*' {set sport='бейсбол'}
+sport ~ '.*(basketball).*' {set sport='баскетбол'}
+sport ~ '.*(beachvolleyball).*' {set sport='пляжный волейбол'}
+sport ~ '.*(boxing).*' {set sport='бокс'}
+sport ~ '.*(chess).*' {set sport='шахматы'}
+sport ~ '.*(climbing).*' {set sport='альпинизм'}
+sport ~ '.*(cricket).*' {set sport='крикет'}
+sport ~ '.*(croquet).*' {set sport='крокет'}
+sport ~ '.*(cycling).*' {set sport='велоспорт'}
+sport ~ '.*(equestrian).*' {set sport='верховая езда'}
+sport ~ '.*(fencing).*' {set sport='фехтование'}
+sport ~ '.*(football).*' {set sport='футбол'}
+sport ~ '.*(free_flying).*' {set sport='дельтаплан'}
+sport ~ '.*(golf).*' {set sport='гольф'}
+sport ~ '.*(gymnastics).*' {set sport='гимнастика'}
+sport ~ '.*(hockey).*' {set sport='хоккей'}
+sport ~ '.*(horse_racing).*' {set sport='лошадиные скачки'}
+sport ~ '.*(judo).*' {set sport='дзюдо'}
+sport ~ '.*(karting).*' {set sport='картинг'}
+sport ~ '.*(kitesurfing).*' {set sport='кайтсёрфинг'}
+sport ~ '.*(motor).*' {set sport='автомотоспорт'}
+sport ~ '.*(motocross).*' {set sport='мотокросс'}
+sport ~ '.*(obstacle_course).*' {set sport='полоса препятствий'}
+sport ~ '.*(paddle_tennis).*' {set sport='настольный теннис'}
+sport ~ '.*(paragliding).*' {set sport='парапланеризм'}
+sport ~ '.*(rowing).*' {set sport='академическая гребля'}
+sport ~ '.*(running).*' {set sport='бег'}
+sport ~ '.*(scuba_diving).*' {set sport='дайвинг'}
+sport ~ '.*(shooting).*' {set sport='стрельба'}
+sport ~ '.*(skateboard).*' {set sport='скейтборд'}
+sport ~ '.*(skating).*' {set sport='каток'}
+sport ~ '.*(ice_skating).*' {set sport='каток'}
+sport ~ '.*(skiing).*' {set sport='лыжи'}
+sport ~ '.*(ski).*' {set sport='лыжи'}
+sport ~ '.*(soccer).*' {set sport='футбол'}
+sport ~ '.*(streetball).*' {set sport='стритбол'}
+sport ~ '.*(surfing).*' {set sport='сёрфинг'}
+sport ~ '.*(swimming).*' {set sport='плавание'}
+sport ~ '.*(table_tennis).*' {set sport='настольный теннис'}
+sport ~ '.*(taekwondo).*' {set sport='тхэквондо'}
+sport ~ '.*(tennis).*' {set sport='теннис'}
+sport ~ '.*(volleyball).*' {set sport='волейбол'}
+sport ~ '.*(weightlifting).*' {set sport='тяжёлая атлетика'}
+sport ~ '.*(wrestling).*' {set sport='борьба'}
+sport ~ '.*(multi).*' {set sport='универсальная спортплощадка'}
+
+### fuel
+### diesel=yes
+amenity=fuel & fuel:diesel=yes & fuel:lpg=yes 
+{ name	'${name} (дизель, АГНС)' |
+ 	'${operator} (дизель, АГНС)' | 
+ 	'${brand} (дизель, АГНС)' | 
+ 	'${ref} (дизель, АГНС)' | 
+	'дизель, АГНС'}
+
+amenity=fuel & fuel:diesel=yes 
+{ name 	'${name} (дизель)' | 
+	'${operator} (дизель)' | 
+	'${brand} (дизель)' | 
+	'${ref} (дизель)' | 
+	'дизель'}
+
+amenity=fuel & fuel:lpg=yes 
+{ name 	'${name} (АГНС)' | 
+	'${operator} (АГНС)' | 
+	'${brand} (АГНС)' | 
+	'${ref} (АГНС)' | 
+	'АГНС'}
+
+amenity=fuel 
+{ name	'${name}' |
+ 	'${operator}' | 
+	'${brand}' |
+	'${ref}'}
+
+amenity=fuel & fuel:HGV_diesel=yes 
+{ name 	'${name} (дизель)' | 
+	'${operator} (дизель)' | 
+	'${brand} (дизель)' | 
+	'${ref} (дизель)' | 
+	'дизель'}
+
+### diesel=no
+amenity=fuel & fuel:diesel=no & fuel:lpg=yes 
+{ name	'${name} (нет дизеля, АГНС)' |
+ 	'${operator} (нет дизеля, АГНС)' | 
+ 	'${brand} (нет дизеля, АГНС)' | 
+ 	'${ref} (нет дизеля, АГНС)' | 
+	'нет дизеля, АГНС'}
+
+amenity=fuel & fuel:diesel=no 
+{ name 	'${name} (нет дизеля)' | 
+	'${operator} (нет дизеля)' | 
+	'${brand} (нет дизеля)' | 
+	'${ref} (нет дизеля)' | 
+	'нет дизеля'}
+
+###
+
+# названия безымянных заправок - АЗС
+amenity=fuel  & name!=* {set name='АЗС'}
+waterway=fuel & name!=* {set name='АЗС'}
+
+# Тип общественного транспорта в название остановки
+(public_transport=platform & railway!=platform | 
+	highway=bus_stop | 
+	amenity=bus_station) & trolleybus=yes & bus=yes
+		{ name '(А,Тб) ${name} ${ref}' |
+			'(А,Тб) ${name}' |
+			'(А,Тб) ${ref}' |
+			'автобус, троллейбус'}
+(public_transport=platform & railway!=platform | 
+	highway=bus_stop | 
+	amenity=bus_station) & trolleybus=yes 
+		{ name '(Тб) ${name} ${ref}' |
+			'(Тб) ${name}' |
+			'(Тб) ${ref}' |
+			'троллейбус'}
+public_transport=platform & railway!=platform | 
+	highway=bus_stop | 
+	amenity=bus_station
+		{ name '(A) ${name} ${ref}' |
+			'(A) ${name}' |
+			'(A) ${ref}' |
+			'автобус'}
+railway=tram_stop { name '(Тр) ${name} ${ref}' |
+			'(Тр) ${name}' |
+			'(Тр) ${ref}' |
+			'трамвай'}
+#public_transport=stop_position & trolleybus=yes
+#		{ name '(Тб) ${name} ${ref}' |
+#			'(Тб) ${name}' |
+#			'(Тб) ${ref}' |
+#			'троллейбус'}
+
+
+#платные парковки
+(amenity=parking | parking=surface) & fee=yes {name '${name} (платная)' | 'платная'}
+
+# Удаляем ошибочные надписи вместо имени
+natural=water & (name='Водоем' | name='Водоём' | name='водоем' | name='водоём') {delete name}
+
+# Названия по умолчанию
+amenity=embassy & country!=* & name!=* {set name='посольство'}
+amenity=telephone & name!=* {set name='телефон'}
+amenity=toilets & name!=* {set name='туалет'}
+highway=services & mkgmap:area2poi!=true & name!=* {set name='обслуживание'}
+tourism=wilderness_hut & name!=* {set name='изба'}
+tourism=alpine_hut & name!=* {set name='горный приют'}
+shop=optician & name!=* {set name='оптика'}
+historic=tomb & name!=* {set name='гробница'}
+tourism=hostel {name '${name} (хостел)' | 'хостел' }
+(highway=traffic_signals | crossing=traffic_signals) & name!=* {set name='светофор'}
+(highway=ford | ford=yes) & name!=* {set name='брод'}
+railway=level_crossing & name!=* {set name='ж/д переезд'}
+(tourism=camp_site | tourism=caravan_site) & name!=* {set name='стоянка'}
+(amenity=shelter | tourism=lean_to | (tourism=picnic_site & shelter=yes)) & name!=* {set name='навес'}
+(amenity=car_rental | amenity=car_sharing | shop=car_rental) & name!=* {set name='аренда авто'}
+((shop=car & service=*) | shop=car_repair | shop=tires | shop=tyres | car_repair=tyres)  & name!=* {set name='автосервис'}
+leisure=slipway & name!=* {set name='лодочный спуск'}
+(leisure=marina | amenity=ferry_terminal) & name!=* {set name='пристань'}
+landuse=depot & name!=* {set name='депо'}
+landuse=railway & name!=* {set name='ж/д территория'}
+waterway=dock & name!=* {set name='док'}
+man_made=cairn & name!=* {set name='тур'}
+natural=stone & name!=* {set name='камень'}
+man_made=breakwater & name!=* {set name='волнорез'}
+barrier=log & name!=* {set name='бревно'}

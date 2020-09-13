@@ -1,0 +1,92 @@
+####
+#### English specific names
+####
+
+### fuel
+### diesel=yes
+amenity=fuel & fuel:diesel=yes & fuel:lpg=yes 
+{ name	'${name} (Diesel, LPG)' |
+ 	'${operator} (Diesel, LPG)' | 
+ 	'${brand} (Diesel, LPG)' | 
+ 	'${ref} (Diesel, LPG)' | 
+	'Diesel, LPG'}
+
+amenity=fuel & fuel:diesel=yes 
+{ name 	'${name} (Diesel)' | 
+	'${operator} (Diesel)' | 
+	'${brand} (Diesel)' | 
+	'${ref} (Diesel)' | 
+	'Diesel'}
+
+amenity=fuel & fuel:lpg=yes 
+{ name 	'${name} (LPG)' | 
+	'${operator} (LPG)' | 
+	'${brand} (LPG)' | 
+	'${ref} (LPG)' | 
+	'LPG'}
+
+amenity=fuel 
+{ name	'${name}' |
+ 	'${operator}' | 
+	'${brand}' |
+	'${ref}'}
+
+amenity=fuel & fuel:HGV_diesel=yes 
+{ name 	'${name} (Diesel)' | 
+	'${operator} (Diesel)' | 
+	'${brand} (Diesel)' | 
+	'${ref} (Diesel)' | 
+	'Diesel'}
+
+### diesel=no
+amenity=fuel & fuel:diesel=no & fuel:lpg=yes 
+{ name	'${name} (No Diesel, LPG)' |
+ 	'${operator} (No Diesel, LPG)' | 
+ 	'${brand} (No Diesel, LPG)' | 
+ 	'${ref} (No Diesel, LPG)' | 
+	'No Diesel, LPG'}
+
+amenity=fuel & fuel:diesel=no 
+{ name 	'${name} (No Diesel)' | 
+	'${operator} (No Diesel)' | 
+	'${brand} (No Diesel)' | 
+	'${ref} (No Diesel)' | 
+	'No Diesel'}
+###
+
+# Unnamed gas stations
+amenity=fuel  & name!=* {set name='fuel'}
+waterway=fuel & name!=* {set name='fuel'}
+
+#Toll Parkings
+(amenity=parking | parking=surface) & fee=yes {name '${name} (toll)' | 'toll'}
+
+# Delete wrong water naming in russian
+natural=water & (name='Водоем' | name='Водоём' | name='водоем' | name='водоём') {delete name}
+
+# Default names
+amenity=embassy & country!=* & name!=* {set name='Embassy'}
+amenity=telephone & name!=* {set name='Telephone'}
+amenity=toilets & name!=* {set name='Toilets'}
+highway=services & mkgmap:area2poi!=true & name!=* {set name='Services'}
+tourism=wilderness_hut & name!=* {set name='wilderness hut'}
+tourism=alpine_hut & name!=* {set name='alpine hut'}
+shop=optician & name!=* {set name='optician'}
+historic=tomb & name!=* {set name='tomb'}
+tourism=hostel {name '${name} (hostel)' | 'hostel' }
+(highway=traffic_signals | crossing=traffic_signals) & name!=* {set name='traffic light'}
+(highway=ford | ford=yes) & name!=* {set name='ford'}
+railway=level_crossing & name!=* {set name='rail crossing'}
+(tourism=camp_site | tourism=caravan_site) & name!=* {set name='camp site'}
+(amenity=shelter | tourism=lean_to | (tourism=picnic_site & shelter=yes)) & name!=* {set name='shelter'}
+(amenity=car_rental | amenity=car_sharing | shop=car_rental) & name!=* {set name='car rental'}
+((shop=car & service=*) | shop=car_repair | shop=tires | shop=tyres | car_repair=tyres)  & name!=* {set name='car repair'}
+leisure=slipway & name!=* {set name='slipway'}
+(leisure=marina | amenity=ferry_terminal) & name!=* {set name='marina'}
+landuse=depot & name!=* {set name='depot'}
+landuse=railway & name!=* {set name='railway area'}
+waterway=dock & name!=* {set name='dock'}
+man_made=cairn & name!=* {set name='cairn'}
+natural=stone & name!=* {set name='stone'}
+man_made=breakwater & name!=* {set name='breakwater'}
+barrier=log & name!=* {set name='log'}

@@ -1,0 +1,16 @@
+# 
+landuse=cemetery|landuse=cemetary|amenity=grave_yard [0x6403 resolution 24]
+
+(landuse=wood | landuse=forest | natural=wood | natural=forest) & (place!=island | place!=islet)  & name=* [0x6618 resolution 24]
+
+landcover=trees & name=* [0x6618 resolution 24]
+
+
+landuse=military & name=* [0x640b resolution 24]
+# landuse=basin & name=* [0x650f resolution 21] #
+(landuse=basin | landuse=reservoir) & water!=wastewater & name=* [0x650f resolution 21]
+landuse=village_green & name=* [0x2c06 resolution 24]
+landuse=retail & name=* [0x2e00 resolution 24]
+
+# карьер, рудник
+landuse=quarry | man_made=mine [0x640c resolution 24]

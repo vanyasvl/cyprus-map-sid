@@ -1,0 +1,39 @@
+# natural=coastline [0x15 resolution 16]
+
+route=ferry {set mkgmap:numbers = false }
+route=ferry & (motorcar=no | motor_vehicle=no) {add mkgmap:ferry=1} [0x1b road_class=0 road_speed=0 resolution 22]
+route=ferry {add mkgmap:ferry=1} [0x1b road_class=3 road_speed=0 resolution 18]
+
+### роутинг по рекам - линия с синими стрелками направления течения на 0-м слое
+(waterway=canal 
+| waterway=river  
+| waterway=rapid | waterway=rapids | whitewater=rapid | whitewater=rapids 
+| waterway=waterfall 
+| waterway=drain  
+| waterway=yes
+| waterway=stream) & tunnel!=* & is_closed()=false {add access=no; add taxi=yes} [0x0f road_class=0 road_speed=0 resolution 24 continue]
+###
+
+(waterway=river | waterway=canal) & intermittent=yes [0x26 resolution 21]
+(waterway=stream | waterway=drain | waterway=ditch) & intermittent=yes [0x10f1d resolution 22]
+
+waterway=canal [0x1f resolution 18]
+waterway=river [0x1f resolution 18 continue]
+waterway=waterfall [0x1001e resolution 18]
+# waterway=stream | waterway=drain [0x18 resolution 22]
+
+(waterway=rapid | waterway=rapids | whitewater=rapid | whitewater=rapids) & is_closed()=false
+    {name '${whitewater:section_name} (r${whitewater:rapid_grade} s${whitewater:section_grade})'
+	| '${whitewater:section_name} (s${whitewater:section_grade})'
+	| '${whitewater:section_name} (r${whitewater:rapid_grade})'
+	| '${whitewater:rapid_name} (s${whitewater:section_grade})'
+	| '${whitewater:rapid_name} (r${whitewater:rapid_grade})'
+	| '(s${whitewater:section_grade})'
+	| '(r${whitewater:rapid_grade})'
+	| '${whitewater:section_name}'
+	| '${whitewater:rapid_name}'
+	| '${name}' } [0x1001f resolution 18 continue]
+
+waterway=drain [0x18 resolution 19 continue]
+waterway=stream | waterway=yes [0x18 resolution 21 continue]
+waterway=ditch [0x18 resolution 21]

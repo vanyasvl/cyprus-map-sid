@@ -1,0 +1,12 @@
+# Сокращаем статусные части в названиях административных границ
+mkgmap:admin_level4=* { set mkgmap:admin_level4='${mkgmap:admin_level4|subst:Республика=>респ.|subst:республика=>респ.|subst:край=>кр.|subst:автономный округ=>авт.окр.|subst:автономная область=>АО|subst:область=>обл.|subst:округ=>окр.}' }
+mkgmap:admin_level5 ~ '.*(район).*' {set mkgmap:admin_level5='${mkgmap:admin_level5|subst:район =>|subst: район=>} р-н'}
+mkgmap:admin_level5 ~ '.*(административный округ).*' {set mkgmap:admin_level5='${mkgmap:admin_level5|subst:административный округ =>|subst: административный округ=>} адм.окр.'}
+mkgmap:admin_level6 ~ '.*(район).*' {set mkgmap:admin_level6='${mkgmap:admin_level6|subst:район =>|subst: район=>} р-н'}
+mkgmap:admin_level6 ~ '.*(городской округ).*' {set mkgmap:admin_level6='${mkgmap:admin_level6|subst:городской округ =>|subst: городской округ=>} ГО'}
+mkgmap:admin_level6 ~ '.*(городской Совет).*' {set mkgmap:admin_level6='${mkgmap:admin_level6|subst: городской Совет=>} горсовет'} #BLR
+mkgmap:admin_level8 ~ '.*(городское поселение).*' {set mkgmap:admin_level8='${mkgmap:admin_level8|subst:городское поселение =>|subst: городское поселение=>} ГП'}
+mkgmap:admin_level8 ~ '.*(сельское поселение).*' {set mkgmap:admin_level8='${mkgmap:admin_level8|subst:сельское поселение =>|subst: сельское поселение=>} СП'}
+mkgmap:admin_level8 ~ '.*(волость).*' {set mkgmap:admin_level8='${mkgmap:admin_level8|subst: волость=>} Вл'}
+mkgmap:admin_level8 ~ '.*(сельский Совет).*' {set mkgmap:admin_level8='${mkgmap:admin_level8|subst: сельский Совет=>} сельсовет'} #BLR
+mkgmap:admin_level6 ~ '.*(городской совет).*' {set mkgmap:admin_level6='${mkgmap:admin_level6|subst: городской совет=>} горсовет'} #UKR

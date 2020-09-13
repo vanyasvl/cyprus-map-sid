@@ -1,0 +1,61 @@
+# 
+#natural=bay [0x3d resolution 16]
+(natural=bay | natural=fjord | natural=strait) & name=* [0x43 resolution 18]
+natural=glacier [0x4d resolution 18]
+natural=wetland & wetland=reedbed | wetland=reedbed [0x10f01 resolution 21]
+natural=wetland | (tidal=yes & natural!=*) [0x51 resolution 21 continue]
+natural=marsh [0x51 resolution 21]
+natural=mud [0x10f16 resolution 21]
+
+natural=waterfall | waterway=waterfall [0x47 resolution 21]
+natural=sea { add mkgmap:skipSizeFilter=true; set mkgmap:drawLevel=2 } [0x32 resolution 16 continue]
+
+waterway=riverbank [0x46 resolution 18]
+
+waterway=dock [0x13 resolution 24]
+
+waterway=rapid | waterway=rapids | whitewater=rapid | whitewater=rapids
+    {name '${whitewater:section_name} (r${whitewater:rapid_grade} s${whitewater:section_grade})'
+	| '${whitewater:section_name} (s${whitewater:section_grade})'
+	| '${whitewater:section_name} (r${whitewater:rapid_grade})'
+	| '${whitewater:rapid_name} (s${whitewater:section_grade})'
+	| '${whitewater:rapid_name} (r${whitewater:rapid_grade})'
+	| '(s${whitewater:section_grade})'
+	| '(r${whitewater:rapid_grade})'
+	| '${whitewater:section_name}'
+	| '${whitewater:rapid_name}'
+	| '${name}' } [0x10f18 resolution 18 continue]
+
+# Пересыхающие водоёмы
+natural=water & intermittent=yes [0x40 resolution 18]
+
+natural=water & (name='Водоем' | name='Водоём' | name='водоем' | name='водоём') {delete name}
+
+# Некоторые большие озера видно везде. Остальные только ниже.
+#natural=water   & name!='Онежское озеро' 
+#		& name!='Ладожское озеро' 
+#		& name!='Рыбинское водохранилище' 
+#		& name!='озеро Ильмень' 
+#		& name!='Чудское' 
+#		& name!='озеро Байкал' 
+#		& name!='оз. Ханка' 
+#		& name!='Воткинское водохранилище' 
+#		& name!='Куйбышевское водохранилище' 
+#		& name!='Братское водохранилище' 
+#			[0x3c resolution 16 continue]
+# natural=water & area_size() > 10000 [0x3c resolution 16 continue]
+natural=water & area_size() > 20000000 [0x3c resolution 16]
+natural=water [0x3f resolution 18]
+
+#natural=water & name='Онежское озеро' 
+#		| name='Ладожское озеро' 
+#		| name='Рыбинское водохранилище' 
+#		| name='озеро Ильмень' 
+#		| name='Чудское' 
+#		| name='озеро Байкал' 
+#		| name='оз. Ханка' 
+#		| name='Воткинское водохранилище' 
+#		| name='Куйбышевское водохранилище' 
+#		| name='Братское водохранилище' 
+#			[0x3c resolution 16]
+# natural=water [0x3c resolution 18]

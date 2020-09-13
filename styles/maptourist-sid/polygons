@@ -1,0 +1,301 @@
+# -------------------------------------------------------------------
+# This is the default mkgmap style file for converting closed OSM ways
+# into Garmin polygons.
+# Any line prefaced with # is a comment and will not be applied.
+# Each line is a rule, of the generalised format:
+#  OSM_tag(s)_to_match  [Garmin_type_code resolution]
+# See http://wiki.openstreetmap.org/wiki/Mkgmap/help/style_rules
+# and http://wiki.openstreetmap.org/wiki/Mkgmap/help/Custom_styles
+# for more information.
+
+addr:housenumber=* {set mkgmap:execute_finalize_rules=true}
+
+include 'inc/name';
+include 'inc/status';
+####### Language secific translations
+if (mkgmap:option:code-page=1251) then
+include "inc/name-ru";
+end
+if (mkgmap:option:code-page=1250) then
+include "inc/name-en";
+end
+####### Language secific translations
+
+# boundary=administrative & admin_level=2 [0x53 resolution 16-18]
+
+# Удаляем ошибочный landuse=residential
+(place=city | place=town | place=suburb | place=village | place=hamlet | place=isolated_dwelling | place=locality) & landuse=residential {delete landuse}
+
+# Удаляем не нужный tourism (Hawaii island) 
+tourism=destination {delete tourism}
+# Удаляем не нужный building=no
+building=no {delete building}
+
+tourism=theme_park & building!=* [0x10f19 resolution 21]
+(tourism=resort | leisure=resort) & building!=* [0x10f19 resolution 21]
+tourism=hotel & building!=* [0x10f19 resolution 21]
+
+leisure=* & sport=* { set name='${name} (${sport})' | '${sport}' }
+
+# Вырубки
+man_made=clearcut | landuse=logging [0x10f14 resolution 21]
+# Сгоревший и мертвый лес
+wood:lost=burnt | wood:lost=dead_wood | wood:damage=dead_wood [0x10f15 resolution 21]
+wood:damage=windfall [0x10f17 resolution 21]
+
+man_made=wastewater_plant & natural!=water [0x0c resolution 21]
+man_made=water_works [0x0c resolution 21]
+man_made=pumping_station & building!=* [0x0c resolution 21]
+man_made=works & (building!=* | building=no) [0x0c resolution 21]
+
+
+man_made=mine [0x0c resolution 21]
+
+# Пирсы 
+man_made=pier | man_made=breakwater [0x10f11 resolution 22]
+
+# Все бесхозные man_made до зданий
+man_made=* & landuse=* {delete man_made}
+
+# здания с улицами, номерами домов и, если есть, с названиями
+man_made=* & area=yes {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber}' 
+	| '${addr:housenumber} ${addr:unit}' 
+	| '${addr:housenumber}' 
+	| '${name} ${addr:unit}'
+	| '${name}'} [0x13 resolution 24]
+#man_made=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+#	| '${addr:street} ${addr:housenumber} ${name}' 
+#	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+#	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+#	| '${addr:street} ${addr:housenumber}' 
+#	| '${addr:housenumber} ${addr:unit}' 
+#	| '${addr:housenumber}' 
+#	| '${name} ${addr:unit}'
+#	| '${name}'} [0x13 resolution 24]
+(building=* | bridge=yes & area=yes) {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber}' 
+	| '${addr:housenumber} ${addr:unit}' 
+	| '${addr:housenumber}' 
+	| '${name} ${addr:unit}'
+	| '${name}'} [0x13 resolution 24]
+tourism=attraction & building!=* & man_made!=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber}' 
+	| '${addr:housenumber} ${addr:unit}' 
+	| '${addr:housenumber}' 
+	| '${name} ${addr:unit}'
+	| '${name}'} [0x10f19 resolution 21]
+tourism=* & building!=* & boundary!=* & man_made!=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber}' 
+	| '${addr:housenumber} ${addr:unit}' 
+	| '${addr:housenumber}' 
+	| '${name} ${addr:unit}'
+	| '${name}'} [0x10f19 resolution 21]
+
+# man_made can be used on areas or lines
+man_made=* & area!=no
+   & (man_made!=door 
+   & man_made!=embankment 
+   & man_made!=breakwater
+   & man_made!=cable_line 
+   & man_made!=cutline 
+   & man_made!=cutting
+   & man_made!=levee 
+   & man_made!=trench
+   & man_made!=wastewater_plant
+   & man_made!=surveillance
+   & man_made!=groyne 
+   & man_made!=waterway
+   & man_made!=reinforced_slope)
+	{name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber}' 
+	| '${addr:housenumber} ${addr:unit}' 
+	| '${addr:housenumber}' 
+	| '${name} ${addr:unit}'
+	| '${name}'}[0x13 resolution 24]
+
+include 'inc/water_polygons';
+include 'inc/landuse_polygons';
+
+aeroway=airport [0x07 resolution 18]
+aeroway=apron [0x10f0c resolution 22]
+aeroway=aerodrome [0x07 resolution 18]
+aeroway=runway {name '${ref}'} [0x0e resolution 18]
+(aeroway=taxiway | aeroway=taxilane) {name '${ref}'} [0x0e resolution 24]
+aeroway=heliport [0x07 resolution 21]
+aeroway=helipad [0x0e resolution 21]
+
+amenity=arts_centre & building!=* [0x10f0c resolution 22]
+amenity=arts_center & building!=* [0x10f0c resolution 22]
+amenity=kindergarten & building!=* [0x0a resolution 22 continue]
+amenity=cafe & building!=* | amenity=fast_food & building!=* | amenity=restaurant & building!=* | amenity=food_court & building!=* [0x08 resolution 22]
+amenity=college & building!=* [0x0a resolution 22]
+amenity=grave_yard [0x1a resolution 21]
+parking=underground | parking=multi-storey [0x06 resolution 24]
+amenity=parking | parking=surface [0x05 resolution 24]
+amenity=prison & building!=* [0x04 resolution 22]
+amenity=school & building!=* [0x0a resolution 22 continue]
+amenity=baby_hatch [0x0a resolution 22 continue]
+# amenity=supermarket is superceded by shop=supermarket or landuse=retail
+amenity=supermarket & building!=* [0x08 resolution 21]
+amenity=university & building!=* [0x0a resolution 22 continue]
+
+(healthcare=hospital | amenity=hospital | amenity=clinic) & building!=* [0x0b resolution 21]
+(healthcare=* | amenity=dentist | amenity=doctors | amenity=nursing_home) & building!=* [0x0b resolution 21]
+
+leisure=common [0x18 resolution 21]
+leisure=garden [0x17 resolution 21]
+leisure=golf_course [0x21 resolution 21]
+leisure=ice_rink [0x19 resolution 24]
+#leisure=marina [0x09 resolution 21]
+#leisure=nature_reserve [0x16 resolution 19]
+leisure=nature_reserve | leisure=natural_reserve | landuse=nature_reserve | landuse=natural_reserve | boundary=national_park | boundary=protected_area [0x16 resolution 19-18 continue]
+# Резервации
+(boundary=protected_area & protect_class=24) | boundary=aboriginal_lands [0x0d resolution 19-18 continue]
+leisure=park [0x17 resolution 21]
+leisure=pitch [0x19 resolution 24]
+#leisure=pitch { name '${name} (${sport})' } [0x19 resolution 24]
+leisure=playground [0x17 resolution 21]
+leisure=recreation_ground [0x17 resolution 21]
+#leisure=sports_center | leisure=sports_centre [0x19 resolution 20]
+leisure=sports_center | leisure=sports_centre { name '${name}' } [0x10612 resolution 22]
+#leisure=stadium [0x19 resolution 20]
+leisure=stadium { name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber}' 
+	| '${addr:housenumber} ${addr:unit}' 
+	| '${addr:housenumber}' 
+	| '${name} ${addr:unit}'
+	| '${name}'} [0x19 resolution 22]
+# leisure=swimming_pool | amenity=swimming_pool {set sport=swimming}
+# leisure=swimming_pool { name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+#	| '${addr:street} ${addr:housenumber} ${name}' 
+#	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+#	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+#	| '${addr:street} ${addr:housenumber}' 
+#	| '${addr:housenumber} ${addr:unit}' 
+#	| '${addr:housenumber}' 
+#	| '${name} ${addr:unit}'
+#	| '${name}'} [0x19 resolution 24]
+leisure=swimming_pool | amenity=swimming_pool [0x3e resolution 24]
+#leisure=track & area=yes [0x19 resolution 21]
+leisure=track { name '${name}' } [0x19 resolution 24]
+leisure=water_park [0x10f19 resolution 21]
+
+#place=village [0x03 resolution 21]
+# Тут работало добавление статусной части к названию нас. пункта. Но cladr:suffix был тотально выпилен из базы умными людьми
+#place=town 		{name '${name}, ${cladr:suffix}' | '${name}' | '${place_name}, ${cladr:suffix}' | '${place_name}'} [0x01 resolution 19]
+#place=city 		{name '${name}, ${cladr:suffix}' | '${name}' | '${place_name}, ${cladr:suffix}' | '${place_name}'} [0x02 resolution 19]
+#place=suburb 		{name '${name}, ${cladr:suffix}' | '${name}' | '${place_name}, ${cladr:suffix}' | '${place_name}'} [0x02 resolution 19]
+#place=village 		{name '${name}, ${cladr:suffix}' | '${name}' | '${place_name}, ${cladr:suffix}' | '${place_name}'} [0x03 resolution 21]
+#place=hamlet 		{name '${name}, ${cladr:suffix}' | '${name}' | '${place_name}, ${cladr:suffix}' | '${place_name}'} [0x03 resolution 22]
+#place=locality 	{name '${name}, ${cladr:suffix}' | '${name}' | '${place_name}, ${cladr:suffix}' | '${place_name}'} [0x03 resolution 22]
+#place=isolated_dwelling {name '${name}, ${cladr:suffix}' | '${name}' | '${place_name}, ${cladr:suffix}' | '${place_name}'} [0x03 resolution 22]
+
+place=town 	[0x01 resolution 19]
+place=city 	[0x02 resolution 19]
+place=suburb 	[0x02 resolution 19]
+place=village 	[0x03 resolution 21]
+place=hamlet 	[0x03 resolution 22]
+place=locality & name=* [0x54 resolution 22]
+place=neighbourhood & name=* [0x55 resolution 22]
+place=isolated_dwelling [0x03 resolution 22]
+place=allotments & landuse!=residential & landuse!=allotments [0x03 resolution 22]
+
+shop=* & building!=* [0x08 resolution 21]
+
+## Площадки на заправках
+highway=* & amenity=fuel | amenity=fuel & area=yes 
+	{delete highway; set highway=rest_area; set area=yes}
+# squares and plazas
+#highway=pedestrian & (area=yes | mkgmap:mp_created=true) [0x17 resolution 22]
+highway=pedestrian & (area=yes | mkgmap:mp_created=true) 
+	| highway=rest_area & (area=yes | mkgmap:mp_created=true)
+	| highway=living_street & (area=yes | mkgmap:mp_created=true)
+	| highway=residential & (area=yes | mkgmap:mp_created=true)
+	| highway=footway & (area=yes | mkgmap:mp_created=true)
+	| highway=service & (area=yes | mkgmap:mp_created=true)
+	| highway=unclassified & (area=yes | mkgmap:mp_created=true) [0x10f0c resolution 22]
+
+# ж/д платформы как площади
+#railway=platform [0x0d resolution 21]
+#public_transport=stop_area [0x0d resolution 21]
+(public_transport=platform & area=yes | railway=platform & area=yes) & !(layer<0) [0x10f0c resolution 22]
+
+# other highways that have area=yes set must be plazas
+(highway=path|highway=pedestrian) & (area=yes | mkgmap:mp_created=true) [0x10f0c resolution 21]
+# other highways that have area=yes set must be parking lots
+highway=* & (area=yes | mkgmap:mp_created=true) [0x05 resolution 21]
+
+historic=museum | historic=memorial [0x1e resolution 21]
+historic=archaeological_site | historic=ruins [0x1e resolution 21]
+historic=ruins & building=yes {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${name}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
+	| '${addr:street} ${addr:housenumber}' 
+	| '${addr:housenumber} ${addr:unit}' 
+	| '${addr:housenumber}' 
+	| '${name} ${addr:unit}'
+	| '${name}'} [0x13 resolution 24]
+
+# building tag should be last
+#(building=* | amenity=*) & area!=no & amenity!=grave_yard [0x13 resolution 24]
+
+###tourism=* & area!=no & waterway!=* & building!=* [0x1f resolution 24]
+
+# Торфоразработки
+# landuse=peat_cutting [0x10102 resolution 21] # inc\landuse_polygons
+
+
+natural=heath | natural=grassland | landcover=grass [0x18 resolution 21]
+surface=stone & (natural=beach | natural=sand) [0x10f12 resolution 21 continue]
+natural=beach | natural=sand | leisure=beach_resort [0x10c06 resolution 21]
+natural=scree [0x10f12 resolution 21]
+natural=shingle [0x10f12 resolution 21]
+natural=cliff [0x10f12 resolution 21]
+natural=stone [0x10f13 resolution 21]
+natural=bare_rock [0x10f13 resolution 21]
+natural=reef [0x10f13 resolution 18]
+natural=scrub [0x4f resolution 21]
+natural=forest {set natural=wood}
+natural=wood & wood:density=sparse [0x10c02 resolution 21]
+natural=wood & (wood=coniferous | leaf_type=needleleaved) [0x10100 resolution 21]
+natural=wood & (wood=deciduous  | leaf_type=broadleaved | leaf_cycle=deciduous) [0x10101 resolution 21]
+natural=wood [0x50 resolution 21]
+natural=valley & name=* [0x54 resolution 22]
+natural=desert [0x52 resolution 21]
+
+landcover=trees & natural!=wood & landuse!=forest & (wood=coniferous | leaf_type=needleleaved) [0x10100 resolution 21]
+landcover=trees & natural!=wood & landuse!=forest & (wood=deciduous | leaf_type=broadleaved)   [0x10101 resolution 21]
+landcover=trees & natural!=wood & landuse!=forest [0x50 resolution 21]
+
+# render small named islands 
+# place=island & name=* & area_size() < 1000000 [0x53 resolution 18]
+place=island & name=* [0x53 resolution 18]
+place=islet & name=* [0x53 resolution 19]
+
+<finalize>
+# The finalizer section is executed for each element when a rule with an element type matches
+
+# we need addrees info from buildings for the address search
+include 'inc/address';
+
+name=* { name '${name}' }
