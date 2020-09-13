@@ -12,6 +12,11 @@ TMP_DIR="./tmp"
 MAP_DIR="./map"
 OUT_DIR="./output"
 
+mkdir -p $TMP_DIR
+mkdir -p $MAP_DIR
+mkdir -p $OUT_DIR
+
+# Clean old output files
 rm -rf $OUT_DIR/*
 
 # Downloading map
