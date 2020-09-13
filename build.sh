@@ -58,12 +58,14 @@ cp -r $OUT_DIR/gmapsupp.img $OUT_DIR/*.gmap $MAP_DIR
 rm -rf $CONTOUR_DIR/*
 
 cd $CONTOUR_DIR
-phyghtmap --step=20 --line-cat=400,100 --pbf --output-prefix=contour --source=srtm1 --srtm-version=3.0 "$SRTM_DIR"/*
+phyghtmap --step=10 --line-cat=400,50 --pbf \
+      --output-prefix=contour --source=srtm1 \
+      --no-zero-contour \
+      --srtm-version=3.0 "$SRTM_DIR"/*
 cd -
 
 java -Xmx1G -jar $MKGMAP_DIR/mkgmap.jar --verbose --output-dir=$CONTOUR_DIR \
       --country-name=Cyprus --country-abbr=CY \
-      --precomp-sea=$MKGMAP_DIR/sea.zip --bounds=$MKGMAP_DIR/bounds.zip \
       --max-jobs=3 --gmapsupp \
       --mapname=$CONTOUR_MAPNAME \
       --transparent --merge-lines --draw-priority=28 \
