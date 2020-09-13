@@ -1,4 +1,4 @@
-# cyprus-map-sid
+# Cyprus Map for Garmin
 OSM Cyprus Map for Garmin
 
 Script to build OSM Cyprus Map for Garmin devices
