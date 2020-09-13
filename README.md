@@ -13,4 +13,6 @@ Script to build OSM Cyprus Map for Garmin devices
 * phyghtmap - http://katze.tfiu.de/projects/phyghtmap/
 
 #### Sources
+* Map data - https://openstreetmap.org
 * Style and configs - modified version of https://maptourist.org
+* SRTM data - https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL1.003/
