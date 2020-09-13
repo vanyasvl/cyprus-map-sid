@@ -19,7 +19,7 @@ mkdir -p $OUT_DIR
 # Clean old output files
 rm -rf $OUT_DIR/*
 
-# Downloading map
+# Download map
 wget http://download.geofabrik.de/europe/cyprus-latest.osm.pbf -O $TMP_DIR/cyprus.osm.pbf
 
 # Build TYP file
