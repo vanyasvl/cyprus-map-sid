@@ -31,8 +31,7 @@ mkdir -p $OUT_DIR
 rm -rf $OUT_DIR/*
 
 # Download map
-# wget http://download.geofabrik.de/europe/cyprus-latest.osm.pbf -O $TMP_DIR/cyprus.osm.pbf
-# wget http://download.geofabrik.de/europe/cyprus.poly -O $TMP_DIR/cyprus.poly
+wget http://download.geofabrik.de/europe/cyprus-latest.osm.pbf -O $TMP_DIR/cyprus.osm.pbf
 
 # Build TYP file
 java -cp $MKGMAP_DIR/mkgmap.jar uk.me.parabola.mkgmap.main.TypCompiler "$TYP_NAME.txt" "$OUT_DIR/$TYP_NAME.typ"
@@ -47,7 +46,7 @@ java -Xmx1G -jar $MKGMAP_DIR/mkgmap.jar --verbose --output-dir=$OUT_DIR \
       --gmapsupp --drive-on=left --gmapi \
       --name-tag-list=name:en,int_name,name \
       --code-page=1252 -c optionsfile.args \
-      --dem-poly="$TMP_DIR/cyprus.poly" --dem="$SRTM_DIR" \
+      --dem="$SRTM_DIR" \
       --dem-dists=3312,13248,26512,53024 \
       "$OUT_DIR/$TYP_NAME.typ" \
       "$TMP_DIR/cyprus.osm.pbf"
@@ -68,7 +67,8 @@ java -Xmx1G -jar $MKGMAP_DIR/mkgmap.jar --verbose --output-dir=$CONTOUR_DIR \
       --country-name=Cyprus --country-abbr=CY \
       --max-jobs=3 --gmapsupp \
       --mapname=$CONTOUR_MAPNAME \
-      --transparent --merge-lines --draw-priority=28 \
+      --bounds=$MKGMAP_DIR/bounds.zip \
+      --merge-lines --draw-priority=28 \
       --description="cyprus-contours" \
       --style-file=styles --style="$STYLE" \
       "$OUT_DIR/$TYP_NAME.typ" $CONTOUR_DIR/contour_*.pbf 
