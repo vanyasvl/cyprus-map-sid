@@ -37,7 +37,7 @@ wget http://download.geofabrik.de/europe/cyprus-latest.osm.pbf -O $TMP_DIR/cypru
 java -cp $MKGMAP_DIR/mkgmap.jar uk.me.parabola.mkgmap.main.TypCompiler "$TYP_NAME.txt" "$OUT_DIR/$TYP_NAME.typ"
 
 # Build map
-java -Xmx1G -jar $MKGMAP_DIR/mkgmap4377.jar --verbose --output-dir=$OUT_DIR \
+java -Xmx1G -jar $MKGMAP_DIR/mkgmap.jar --verbose --output-dir=$OUT_DIR \
       --precomp-sea=$MKGMAP_DIR/sea.zip --bounds=$MKGMAP_DIR/bounds.zip \
       --mapname="$MAPNAME" --description="$MAP_DESCR" --family-name="$MAP_FAMILY_NAME" \
       --product-id=1 --family-id="$MAP_FAMILY_ID" --series-name="$MAP_SERIES_NAME" \
@@ -64,7 +64,7 @@ phyghtmap --step=10 --line-cat=400,50 --pbf \
       --srtm-version=3.0 "$SRTM_DIR"/*
 cd -
 
-java -Xmx1G -jar $MKGMAP_DIR/mkgmap4377.jar --verbose --output-dir=$CONTOUR_DIR \
+java -Xmx1G -jar $MKGMAP_DIR/mkgmap.jar --verbose --output-dir=$CONTOUR_DIR \
       --country-name=Cyprus --country-abbr=CY \
       --max-jobs=3 --gmapsupp \
       --mapname=$CONTOUR_MAPNAME \
