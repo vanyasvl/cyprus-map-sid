@@ -46,6 +46,11 @@ phyghtmap --step=10 --line-cat=400,50 --pbf \
       --srtm-version=3.0 *.hgt
 cd -
 
+echo Merging contour maps
+osmium merge "$TMP_DIR"/contour_*.pbf -o "$TMP_DIR/contours.pbf"
+echo Cutting contour map
+osmium extract --polygon cyprus.poly "$TMP_DIR/contours.pbf" -o "$TMP_DIR/cyprus_contours.pbf"
+
 echo Building map
 java -Xmx1G -jar "$MKGMAP_DIR/mkgmap.jar" --verbose --output-dir="$OUT_DIR" \
       --precomp-sea="$MKGMAP_DIR/sea.zip" --bounds="$MKGMAP_DIR/bounds.zip" \
@@ -61,8 +66,8 @@ java -Xmx1G -jar "$MKGMAP_DIR/mkgmap.jar" --verbose --output-dir="$OUT_DIR" \
       --dem-dists=3312,13248,26512,53024 \
       "$TMP_DIR/cyprus.osm.pbf" "$TYP_FILE" \
       --transparent --merge-lines --draw-priority=28 \
-      --description="cyprus-contours" \
-      "$TMP_DIR"/contour_*.pbf "$TYP_FILE"
+      --description="Cyprus contours" \
+      "$TMP_DIR/cyprus_contours.pbf"
 
 cp -r "$OUT_DIR/gmapsupp.img" "$OUT_DIR"/*.gmap "$MAP_DIR"
 
