@@ -7,38 +7,48 @@ MAP_FAMILY_ID=41339
 MAP_DESCR="Cyprus OSM sid"
 MAP_FAMILY_NAME="Cyprus OSM sid"
 MAP_SERIES_NAME="Cyprus OSM sid"
-
-CONTOUR_DIR="./contours"
-CONTOUR_MAPNAME=41339000
-
-# Dir with appropriate hgt files
-SRTM_DIR="/Users/sid/maps/cyprus-srtm"
-
 STYLE="maptourist-sid"
-
-TYP_NAME="OSM-2018"
+TYP_FILE="OSM-2018.txt"
 
 TMP_DIR="./tmp"
 MAP_DIR="./map"
 OUT_DIR="./output"
 
-mkdir -p $TMP_DIR
-mkdir -p $MAP_DIR
-mkdir -p $OUT_DIR
+SRTM_URL="http://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL1.003/2000.02.11"
+CYPRUS_MAP_URL="http://download.geofabrik.de/europe/cyprus-latest.osm.pbf"
 
+mkdir -p "$TMP_DIR" "$OUT_DIR" "$MAP_DIR"
 
-# Clean old output files
-rm -rf $OUT_DIR/*
+echo Cleaning old output files
+rm -rf "$OUT_DIR"/*
+echo Cleaning old temp files
+rm -rf "$TMP_DIR"/*
 
-# Download map
-wget http://download.geofabrik.de/europe/cyprus-latest.osm.pbf -O $TMP_DIR/cyprus.osm.pbf
+echo Downloading Cyprus map
+wget -q --show-progress "$CYPRUS_MAP_URL" -O "$TMP_DIR/cyprus.osm.pbf"
 
-# Build TYP file
-java -cp $MKGMAP_DIR/mkgmap.jar uk.me.parabola.mkgmap.main.TypCompiler "$TYP_NAME.txt" "$OUT_DIR/$TYP_NAME.typ"
+echo Downloading srtm files
+wget -q --show-progress --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E032.SRTMGL1.hgt.zip" -O "$TMP_DIR/N34E032.SRTMGL1.hgt.zip"
+wget -q --show-progress --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E033.SRTMGL1.hgt.zip" -O "$TMP_DIR/N34E033.SRTMGL1.hgt.zip"
+wget -q --show-progress --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E034.SRTMGL1.hgt.zip" -O "$TMP_DIR/N34E034.SRTMGL1.hgt.zip"
+wget -q --show-progress --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E032.SRTMGL1.hgt.zip" -O "$TMP_DIR/N35E032.SRTMGL1.hgt.zip"
+wget -q --show-progress --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E033.SRTMGL1.hgt.zip" -O "$TMP_DIR/N35E033.SRTMGL1.hgt.zip"
+wget -q --show-progress --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E034.SRTMGL1.hgt.zip" -O "$TMP_DIR/N35E034.SRTMGL1.hgt.zip"
 
-# Build map
-java -Xmx1G -jar $MKGMAP_DIR/mkgmap.jar --verbose --output-dir=$OUT_DIR \
-      --precomp-sea=$MKGMAP_DIR/sea.zip --bounds=$MKGMAP_DIR/bounds.zip \
+echo Unpacking srtm files
+unzip -q -o "$TMP_DIR"/\*.zip -d "$TMP_DIR"
+
+echo Building contour lines
+cd "$TMP_DIR"
+phyghtmap --step=10 --line-cat=400,50 --pbf \
+      --output-prefix=contour --source=srtm1 \
+      --no-zero-contour \
+      --srtm-version=3.0 *.hgt
+cd -
+
+echo Building map
+java -Xmx1G -jar "$MKGMAP_DIR/mkgmap.jar" --verbose --output-dir="$OUT_DIR" \
+      --precomp-sea="$MKGMAP_DIR/sea.zip" --bounds="$MKGMAP_DIR/bounds.zip" \
       --mapname="$MAPNAME" --description="$MAP_DESCR" --family-name="$MAP_FAMILY_NAME" \
       --product-id=1 --family-id="$MAP_FAMILY_ID" --series-name="$MAP_SERIES_NAME" \
       --country-name=Cyprus --country-abbr=CY \
@@ -47,31 +57,13 @@ java -Xmx1G -jar $MKGMAP_DIR/mkgmap.jar --verbose --output-dir=$OUT_DIR \
       --gmapsupp --drive-on=left --gmapi \
       --name-tag-list=name:en,int_name,name \
       --latin1 -c optionsfile.args \
-      --dem="$SRTM_DIR" \
+      --dem="$TMP_DIR" --dem-poly=cyprus.poly \
       --dem-dists=3312,13248,26512,53024 \
-      "$OUT_DIR/$TYP_NAME.typ" \
-      "$TMP_DIR/cyprus.osm.pbf"
-
-cp -r $OUT_DIR/gmapsupp.img $OUT_DIR/*.gmap $MAP_DIR
-
-# Buildeng contour lines
-rm -rf $CONTOUR_DIR/*
-
-cd $CONTOUR_DIR
-phyghtmap --step=10 --line-cat=400,50 --pbf \
-      --output-prefix=contour --source=srtm1 \
-      --no-zero-contour \
-      --srtm-version=3.0 "$SRTM_DIR"/*
-cd -
-
-java -Xmx1G -jar $MKGMAP_DIR/mkgmap.jar --verbose --output-dir=$CONTOUR_DIR \
-      --country-name=Cyprus --country-abbr=CY \
-      --max-jobs=3 --gmapsupp \
-      --mapname=$CONTOUR_MAPNAME \
+      "$TMP_DIR/cyprus.osm.pbf" "$TYP_FILE" \
       --transparent --merge-lines --draw-priority=28 \
       --description="cyprus-contours" \
-      --style-file=styles --style="$STYLE" \
-      --style-option=code-page=1250 \
-      "$OUT_DIR/$TYP_NAME.typ" $CONTOUR_DIR/contour_*.pbf 
+      "$TMP_DIR"/contour_*.pbf "$TYP_FILE"
 
-cp $CONTOUR_DIR/gmapsupp.img $MAP_DIR/gmapsupp-contours.img
+cp -r "$OUT_DIR/gmapsupp.img" "$OUT_DIR"/*.gmap "$MAP_DIR"
+
+echo All done
