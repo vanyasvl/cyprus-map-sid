@@ -11,6 +11,7 @@ Script to build OSM Cyprus Map for Garmin devices
 #### Requiriments
 * mkgmap: http://www.mkgmap.org.uk/download/mkgmap.html
 * phyghtmap: http://katze.tfiu.de/projects/phyghtmap/
+* osmium-tool: https://osmcode.org/osmium-tool/
 
 #### Sources
 * OSM: https://openstreetmap.org
