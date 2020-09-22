@@ -6621,11 +6621,10 @@ FontStyle=NoLabel (invisible)
 CustomColor=DayAndNight
 DaycustomColor:#000000
 NightcustomColor:#FFFFFF
-DayXpm="2 2 1 1"   Colormode=32
-"!	c #000000"  alpha=0
-"!!"
-"!!"
-;12
+DayXpm="1 1 1 1"
+"!	c none"
+"!"
+;1
 [end]
 
 
