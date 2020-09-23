@@ -41,7 +41,7 @@ unzip -q -o "$TMP_DIR"/\*.zip -d "$TMP_DIR"
 echo Building contour lines
 cd "$TMP_DIR"
 phyghtmap --step=10 --line-cat=400,50 --pbf \
-      --output-prefix=contour --source=srtm1 \
+      --output-prefix=contour \
       --no-zero-contour \
       --srtm-version=3.0 *.hgt
 cd -
