@@ -255,7 +255,7 @@ String1=0x19,промзона
 String2=0x04,industrial
 ExtendedLabels=N
 Xpm="0 0 2 0"
-"1 c #A4A4A4"
+"1 c #E8DCE8"
 "2 c #313131"
 [end]
 
@@ -328,7 +328,7 @@ ExtendedLabels=Y
 FontStyle=NoLabel (invisible)
 CustomColor=No
 Xpm="0 0 2 0"
-"1 c #E6E6E6"
+"1 c #F0F0F0"
 "2 c #626262"
 [end]
 
@@ -342,7 +342,7 @@ ExtendedLabels=Y
 FontStyle=NoLabel (invisible)
 CustomColor=No
 Xpm="0 0 2 0"
-"1 c #BD6500"
+"1 c #D19F60"
 "2 c #7B3000"
 [end]
 
@@ -2133,7 +2133,7 @@ UseOrientation=Y
 LineWidth=4
 BorderWidth=1
 Xpm="0 0 2 0"
-"1 c #FFCA6A"
+"1 c #FFA600"
 "2 c #BD0000"
 String1=0x19,второстепенная
 String2=0x04,secondary highway
@@ -2161,7 +2161,7 @@ ExtendedLabels=N
 Type=0x06
 ;GRMN_TYPE: Roads/RESIDENTIAL/Residential street, these are typically the most numerous roads in a detailed city map and do not show up until the user is zoomed in quite far/Non NT, NT
 UseOrientation=Y
-LineWidth=4
+LineWidth=2
 BorderWidth=1
 Xpm="0 0 2 0"
 "1 c #FFFFB4"
@@ -2178,7 +2178,7 @@ Type=0x07
 UseOrientation=Y
 LineWidth=2
 Xpm="0 0 2 0"
-"1 c #000000"
+"1 c #808080"
 "2 c #C5C5C5"
 String1=0x19,проезд
 String2=0x04,alley
@@ -2259,7 +2259,7 @@ ExtendedLabels=N
 Type=0x0c
 ;GRMN_TYPE: Roads/ROUNDABOUT/Roundabout/Non NT, NT
 UseOrientation=Y
-LineWidth=3
+LineWidth=2
 BorderWidth=1
 Xpm="0 0 4 0"
 "1 c #838383"
@@ -2279,8 +2279,8 @@ UseOrientation=Y
 LineWidth=3
 BorderWidth=1
 Xpm="0 0 2 0"
-"1 c #FFFFFF"
-"2 c #000000"
+"1 c #808080"
+"2 c #c9c9c9"
 String1=0x19,жилая улица
 String2=0x04,residential street
 ExtendedLabels=N
@@ -2418,6 +2418,18 @@ String2=0x04,railroad
 ExtendedLabels=N
 [end]
 
+[_line]
+Type=0x15
+;GRMN_TYPE: Customizable Line Types/CUSTOMIZABLE_ROUTE_LINE_1/Routable customizable line/Non NT, NT
+UseOrientation=Y
+LineWidth=2
+Xpm="0 0 2 0"
+"1 c #808080"
+"2 c #c9c9c9"
+String1=0x19,жилая улица
+String2=0x04,residential street
+ExtendedLabels=N
+[end]
 
 [_line]
 Type=0x16
@@ -7479,7 +7491,7 @@ DayXpm="16 14 85 2"   Colormode=32
 "%7	c #484848"  alpha=0
 "%8	c #9E9E9E"  alpha=0
 "%9	c #161616"  alpha=0
-"?!	c #696969"  alpha=0
+"?!	c #808080"  alpha=0
 "?#	c #D4D4D4"  alpha=0
 "?%	c #959595"  alpha=0
 "??	c #EAEAEA"  alpha=0

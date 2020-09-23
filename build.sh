@@ -66,7 +66,6 @@ java -Xmx1G -jar "$MKGMAP_DIR/mkgmap.jar" --verbose --output-dir="$OUT_DIR" \
       --dem-dists=3312,13248,26512,53024 \
       "$TMP_DIR/cyprus.osm.pbf" "$TYP_FILE" \
       --transparent --merge-lines --draw-priority=28 \
-      --description="Cyprus contours" \
       "$TMP_DIR/cyprus_contours.pbf"
 
 cp -r "$OUT_DIR/gmapsupp.img" "$OUT_DIR"/*.gmap "$MAP_DIR"
