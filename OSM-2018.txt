@@ -329,7 +329,7 @@ FontStyle=NoLabel (invisible)
 CustomColor=No
 Xpm="0 0 2 0"
 "1 c #F0F0F0"
-"2 c #626262"
+"2 c #303030"
 [end]
 
 
@@ -1683,9 +1683,11 @@ String2=0x04,construction
 ExtendedLabels=Y
 FontStyle=NoLabel (invisible)
 CustomColor=No
-Xpm="32 32 2 1"
-"! c #737373"
+Xpm="32 32 4 1"
+"! c #D8D8CB"
 "# c #C5C5C5"
+"3 c #333333"
+"4 c #535353"
 "#!!!!!!!#!!!!!!!#!!!!!!!#!!!!!!!"
 "!#!!!!!!!#!!!!!!!#!!!!!!!#!!!!!!"
 "!!#!!!!!!!#!!!!!!!#!!!!!!!#!!!!!"
