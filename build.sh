@@ -53,7 +53,7 @@ osmium extract --polygon cyprus.poly "$TMP_DIR/contours.pbf" -o "$TMP_DIR/cyprus
 
 echo Building map
 java -Xmx1G -jar "$MKGMAP_DIR/mkgmap.jar" --verbose --output-dir="$OUT_DIR" \
-      --precomp-sea="$MKGMAP_DIR/sea.zip" --bounds="$MKGMAP_DIR/bounds.zip" \
+      --precomp-sea="$MKGMAP_DIR/sea-latest.zip" --bounds="$MKGMAP_DIR/bounds-latest.zip" \
       --mapname="$MAPNAME" --description="$MAP_DESCR" --family-name="$MAP_FAMILY_NAME" \
       --product-id=1 --family-id="$MAP_FAMILY_ID" --series-name="$MAP_SERIES_NAME" \
       --country-name=Cyprus --country-abbr=CY \

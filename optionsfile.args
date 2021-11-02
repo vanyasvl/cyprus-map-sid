@@ -14,7 +14,6 @@ housenumbers
 route
 drive-on=detect
 # check-roundabouts
-check-roundabout-flares
 remove-short-arcs
 location-autofill=bounds
 #bounds=bounds.zip
@@ -34,6 +33,6 @@ remove-ovm-work-files=true
 #precomp-sea=sea.zip
 keep-going
 
-# check-styles 
+# check-styles
 # generate-sea=extend-sea-sectors,close-gaps=300000,floodblocker
 # precomp-sea=./sea
