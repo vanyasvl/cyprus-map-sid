@@ -3,4 +3,4 @@ output/*
 map/*
 contours/*
 .DS_Store
-
+srtm_downloads/*
