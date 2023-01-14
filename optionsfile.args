@@ -6,7 +6,6 @@
 # unicode
 # tdbfile
 
-max-jobs:3
 index
 split-name-index
 lower-case
@@ -16,11 +15,9 @@ drive-on=detect
 # check-roundabouts
 remove-short-arcs
 location-autofill=bounds
-#bounds=bounds.zip
 process-destination
 process-exits
 draw-priority=24
-# hide-gmapsupp-on-pc
 reduce-point-density-polygon=2
 reduce-point-density=4
 order-by-decreasing-area
@@ -30,7 +27,6 @@ add-pois-to-areas
 process-exits
 process-destination
 remove-ovm-work-files=true
-#precomp-sea=sea.zip
 keep-going
 
 # check-styles
