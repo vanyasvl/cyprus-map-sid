@@ -32,16 +32,14 @@ jobs:
         run: |
           echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
       - name: Publish Release
-        uses: "softprops/action-gh-release@v1"
+        uses: ncipollo/release-action@v1
         with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          name: "Release ${{ env.DATE }}"
-          tag_name: weekly
-          body: |
+          artifacts: output/*.zip
+          name: Release ${{ env.DATE }}
+          tag: weekly
+          allowUpdates: true
+          replacesArtifacts: true
+          body:  |
             Files:
-              `Cyprus OSM sid.gmap` - for BaseCamp
+              `Cyprus_OSM.gmap.zip` - for BaseCamp
               `gmapsupp.img` - for device
-          files: |
-            output/Cyprus OSM sid.gmap.zip
-            output/gmapsupp.img.zip
