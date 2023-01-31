@@ -62,7 +62,7 @@ java -Xmx3G -jar "${MKGMAP_DIR}/mkgmap.jar" --verbose --max-jobs=2 --output-dir=
 
 echo Compressing maps
 cd ./output
-zip -r "Cyprus OSM sid.gmap.zip" "Cyprus OSM sid.gmap"
+zip -r "Cyprus_OSM.gmap.zip" "Cyprus OSM sid.gmap"
 zip -r "gmapsupp.img.zip" "gmapsupp.img"
 cd -
 
