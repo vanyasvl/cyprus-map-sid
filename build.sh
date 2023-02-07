@@ -7,7 +7,7 @@ MAP_DESCR="Cyprus OSM sid"
 MAP_FAMILY_NAME="Cyprus OSM sid"
 MAP_SERIES_NAME="Cyprus OSM sid"
 STYLE="maptourist-sid"
-TYP_FILE="OSM-2018.txt"
+TYP_FILE="typ-sid.txt"
 
 MKGMAP_DIR="${MKGMAP_DIR:-/tmp/mkgmap}"
 
@@ -32,16 +32,16 @@ unzip -q -o "srtm_downloads/*.zip" -d "./tmp"
 
 echo Building contour lines
 cd ./tmp
-phyghtmap --step=10 --line-cat=400,50 --pbf \
+phyghtmap --step=20 --line-cat=400,50 --pbf \
       --output-prefix=contour \
       --no-zero-contour \
       --srtm-version=3.0 ./*.hgt
 cd -
 
 echo Merging contour maps
-osmium merge ./tmp/contour_*.pbf -o ./tmp/contours.pbf
+osmium merge --overwrite ./tmp/contour_*.pbf -o ./tmp/contours.pbf
 echo Cutting contour map
-osmium extract --polygon cyprus.poly ./tmp/contours.pbf -o ./tmp/cyprus_contours.pbf
+osmium extract --overwrite --polygon cyprus.poly ./tmp/contours.pbf -o ./tmp/cyprus_contours.pbf
 
 echo Building map
 java -Xmx3G -jar "${MKGMAP_DIR}/mkgmap.jar" --verbose --max-jobs=2 --output-dir="./output" \
@@ -50,10 +50,8 @@ java -Xmx3G -jar "${MKGMAP_DIR}/mkgmap.jar" --verbose --max-jobs=2 --output-dir=
       --product-id=1 --family-id="$MAP_FAMILY_ID" --series-name="$MAP_SERIES_NAME" \
       --country-name=Cyprus --country-abbr=CY \
       --style-file=styles --style="$STYLE" \
-      --style-option=code-page=1250 \
-      --gmapsupp --drive-on=left --gmapi \
-      --name-tag-list=name:en,int_name,name \
-      --latin1 -c optionsfile.args \
+      -c optionsfile.args \
+      --drive-on=left \
       --dem="./tmp" --dem-poly=cyprus.poly \
       --dem-dists=3312,13248,26512,53024 \
       "./tmp/cyprus.osm.pbf" "$TYP_FILE" \

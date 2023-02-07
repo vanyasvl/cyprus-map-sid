@@ -1,4 +1,4 @@
-# 
+#
 #natural=bay [0x3d resolution 16]
 (natural=bay | natural=fjord | natural=strait) & name=* [0x43 resolution 18]
 natural=glacier [0x4d resolution 18]
@@ -31,31 +31,5 @@ natural=water & intermittent=yes [0x40 resolution 18]
 
 natural=water & (name='Водоем' | name='Водоём' | name='водоем' | name='водоём') {delete name}
 
-# Некоторые большие озера видно везде. Остальные только ниже.
-#natural=water   & name!='Онежское озеро' 
-#		& name!='Ладожское озеро' 
-#		& name!='Рыбинское водохранилище' 
-#		& name!='озеро Ильмень' 
-#		& name!='Чудское' 
-#		& name!='озеро Байкал' 
-#		& name!='оз. Ханка' 
-#		& name!='Воткинское водохранилище' 
-#		& name!='Куйбышевское водохранилище' 
-#		& name!='Братское водохранилище' 
-#			[0x3c resolution 16 continue]
-# natural=water & area_size() > 10000 [0x3c resolution 16 continue]
 natural=water & area_size() > 20000000 [0x3c resolution 16]
 natural=water [0x3f resolution 18]
-
-#natural=water & name='Онежское озеро' 
-#		| name='Ладожское озеро' 
-#		| name='Рыбинское водохранилище' 
-#		| name='озеро Ильмень' 
-#		| name='Чудское' 
-#		| name='озеро Байкал' 
-#		| name='оз. Ханка' 
-#		| name='Воткинское водохранилище' 
-#		| name='Куйбышевское водохранилище' 
-#		| name='Братское водохранилище' 
-#			[0x3c resolution 16]
-# natural=water [0x3c resolution 18]

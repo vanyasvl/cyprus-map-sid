@@ -18,12 +18,10 @@ description~'.*(\u00bb+).*' {set description='${description|subst:[\u00bb+]~>}'}
 
 # Description to Name
 # копия из /name, но не set. Иначе задвоения в полигонах!
-#(name=* & description=*)|(name=* & description!=*)|(name!=* & description=*) 
+#(name=* & description=*)|(name=* & description!=*)|(name!=* & description=*)
 #	{ name '${name} (${description})'|'${name}'|'${description}' }
 
 addr:housenumber=* {set mkgmap:execute_finalize_rules=true}
-
-include 'inc/status';
 
 # сокращаем статусные части названий улиц (пока отлючено)
 # name=* {  name '${name|subst:улица=> ул.
@@ -49,8 +47,8 @@ highway=* {add taxi=no}
 
 # Hide proposed ways
 # убираем из обработки все планируемые дороги, ж/д, мосты и т.д.
-(highway=proposed | highway=proposal | highway=planned | highway ~ '.*proposed.*' 
-	| railway=proposed | bridge=proposed | proposed=*) 
+(highway=proposed | highway=proposal | highway=planned | highway ~ '.*proposed.*'
+	| railway=proposed | bridge=proposed | proposed=*)
 	{deletealltags}
 #	{delete highway; delete junction;delete oneway; delete rail; delete bridge; delete tunnel}
 
@@ -63,10 +61,10 @@ highway=* {add taxi=no}
 # Hide other non-existent ways
 (highway=unbuilt | highway=neverbuilt | highway=rejected | highway ~ 'x-.*') {delete highway;delete junction}
 # Remove highway tag from ways which are not suitable for routing
-highway=traffic_signals | highway=junction | highway=island | highway=centre_line | highway=traffic_island | highway=stopline {delete highway} 
+highway=traffic_signals | highway=junction | highway=island | highway=centre_line | highway=traffic_island | highway=stopline {delete highway}
 highway=piste | highway=ski {delete highway}
 highway=no | highway=none {delete highway}
- 
+
 # Hide unaccessible tunnels
 #highway=* & tunnel=yes & (access=private|access=no)
 #	& foot!=* & bicycle!=* {delete highway;delete junction}
@@ -77,58 +75,28 @@ bridge=no	{delete highway; delete rail; delete bridge}
 # Assign the street name for house number search
 highway=* & name=* { set mkgmap:street='${name}' }
 
-####### Language secific translations
-if (mkgmap:option:code-page=1251) 
-then
-	# платная
-	highway=* & toll=yes { set name='${name} (платн.)' | 'платная' }
-	# грейдер
-	highway=* & surface=compacted & highway!=pedestrian & highway!=footway & highway!=path
-	{ set name='${name} (грейдер)' | 'грейдер' }
-	# гравийка
-	highway=* & surface=gravel& highway!=pedestrian & highway!=footway & highway!=path
-	{ set name='${name} (гравийка)' | 'гравийка' }
-	# бетонка
-	highway=* & surface=concrete & highway!=pedestrian & highway!=footway & highway!=path
-	{ set name='${name} (бетонка)' | 'бетонка' }
-	highway=* & surface=concrete:plates & highway!=pedestrian & highway!=footway & highway!=path
-	{ set name='${name} (бетонка)' | 'бетонка' }
-	## недейств. ж/д (добавил в конец railway=disused)
-	railway=abandoned | (railway=* & abandoned=yes) | railway=disused | (disused:railway=rail & railway!=disused)
-	{ name '${name} (недейств. ж/д)' | 'недейств. ж/д' }
-	## недейств. ужд
-	railway=narrow_gauge & disused=yes { name '${name} (недейств. ужд)' | 'недейств. ужд' }
-	## узкоколейка
-	railway=narrow_gauge { name '${name} (ужд)' | 'ужд' }
-end
+# платная
+highway=* & toll=yes { set name='${name} (toll)' | 'toll road' }
+# грейдер
+highway=* & surface=compacted & highway!=pedestrian & highway!=footway & highway!=path
+{ set name='${name} (comapcted)' | 'comapcted' }
+# гравийка
+highway=* & surface=gravel& highway!=pedestrian & highway!=footway & highway!=path
+{ set name='${name} (gravel)' | 'gravel' }
+# бетонка
+highway=* & surface=concrete & highway!=pedestrian & highway!=footway & highway!=path
+{ set name='${name} (concrete)' | 'concrete' }
+highway=* & surface=concrete:plates & highway!=pedestrian & highway!=footway & highway!=path
+{ set name='${name} (concrete)' | 'concrete' }
+## недейств. ж/д (добавил в конец railway=disused)
+railway=abandoned | (railway=* & abandoned=yes) | railway=disused | (disused:railway=rail & railway!=disused)
+{ name '${name} (disused rail)' | 'disused rail' }
+## недейств. ужд
+railway=narrow_gauge & disused=yes { name '${name} (disused narrow rail)' | 'disused narrow rail' }
+## узкоколейка
+railway=narrow_gauge { name '${name} (narrow rail)' | 'narrow rail' }
 
-if (mkgmap:option:code-page=1250) 
-then
-	# платная
-	highway=* & toll=yes { set name='${name} (toll)' | 'toll road' }
-	# грейдер
-	highway=* & surface=compacted & highway!=pedestrian & highway!=footway & highway!=path
-	{ set name='${name} (comapcted)' | 'comapcted' }
-	# гравийка
-	highway=* & surface=gravel& highway!=pedestrian & highway!=footway & highway!=path
-	{ set name='${name} (gravel)' | 'gravel' }
-	# бетонка
-	highway=* & surface=concrete & highway!=pedestrian & highway!=footway & highway!=path
-	{ set name='${name} (concrete)' | 'concrete' }
-	highway=* & surface=concrete:plates & highway!=pedestrian & highway!=footway & highway!=path
-	{ set name='${name} (concrete)' | 'concrete' }
-	## недейств. ж/д (добавил в конец railway=disused)
-	railway=abandoned | (railway=* & abandoned=yes) | railway=disused | (disused:railway=rail & railway!=disused)
-	{ name '${name} (disused rail)' | 'disused rail' }
-	## недейств. ужд
-	railway=narrow_gauge & disused=yes { name '${name} (disused narrow rail)' | 'disused narrow rail' }
-	## узкоколейка
-	railway=narrow_gauge { name '${name} (narrow rail)' | 'narrow rail' }
-end
-####### Language specific translations
-
-
-highway=* & amenity=fuel | amenity=fuel & area=yes 
+highway=* & amenity=fuel | amenity=fuel & area=yes
 	{delete highway; set highway=rest_area; set area=yes}
 
 (aeroway=runway | aeroway=stopway) & highway!=* & is_closed()=false {name '${ref}'} [0x27 resolution 19]
@@ -149,29 +117,29 @@ highway=motorway      { add oneway=yes; add mkgmap:numbers=false }
 highway=motorway_link { add mkgmap:numbers=false }
 
 # дополнительный тип линии односторонних дорог со стрелками
-(oneway=yes | oneway=-1) & 
-	(highway=motorway   | highway=motorway_link 
+(oneway=yes | oneway=-1) &
+	(highway=motorway   | highway=motorway_link
 	| highway=trunk     | highway=trunk_link
-	| highway=primary   | highway=primary_link  
+	| highway=primary   | highway=primary_link
 	| highway=secondary | highway=secondary_link
-	| highway=tertiary  | highway=tertiary_link 
-	| highway=unclassified 
+	| highway=tertiary  | highway=tertiary_link
+	| highway=unclassified
 	| highway=residential)
 	  {addlabel '${name}' } [0x10f11 resolution 22 continue]
-(oneway=yes | oneway=-1)  & highway=* & motorroad=yes 
+(oneway=yes | oneway=-1)  & highway=* & motorroad=yes
 	  {addlabel '${name}' } [0x10f11 resolution 22 continue]
 
 (oneway=yes | oneway=-1)
-	& highway!=motorway  & highway!=motorway_link 
+	& highway!=motorway  & highway!=motorway_link
 	& highway!=trunk     & highway!=trunk_link
-	& highway!=primary   & highway!=primary_link  
+	& highway!=primary   & highway!=primary_link
 	& highway!=secondary & highway!=secondary_link
 	& highway!=tertiary  & highway!=tertiary_link
-	& highway!=unclassified 
+	& highway!=unclassified
 	& highway!=residential
-	& (highway=* & motorroad!=yes) 
+	& (highway=* & motorroad!=yes)
 	  {addlabel '${name}' } [0x10f11 resolution 24 continue]
-junction=roundabout & highway!=* 
+junction=roundabout & highway!=*
 	  {addlabel '${name}' } [0x10f11 resolution 24 continue]
 
 # Добавляем запреты проезда для машин
@@ -195,7 +163,7 @@ cutting=yes & (highway=motorway
 	| highway=trunk
 	| highway=primary
 	| highway=secondary
-	| highway=tertiary 
+	| highway=tertiary
 	| highway~'.*_link'
 	| railway=*) [0x1010a resolution 22 continue]
 
@@ -216,13 +184,13 @@ man_made=pier & is_closed()=false & area!=yes [0x10f1c resolution 24]
 	& area!=yes [0x10f18 resolution 24 continue]
 
 # линии тоннелей дополнительно к дорогам
-(tunnel=culvert | tunnel=yes | tunnel=true) 
-	& railway!=subway 
-	& railway!=construction 
+(tunnel=culvert | tunnel=yes | tunnel=true)
+	& railway!=subway
+	& railway!=construction
 	& area!=yes [0x10f1a resolution 24 continue]
 
 # линии бродов тем же типом, что и track
-highway=ford | highway=* & ford=yes [0x0a road_class=0 road_speed=0 resolution 21] 
+highway=ford | highway=* & ford=yes [0x0a road_class=0 road_speed=0 resolution 21]
 
 # Лесополоса
 natural=tree_row [0x10106 resolution 22]
@@ -243,41 +211,41 @@ highway=* & oneway=yes & (access=private|access=no)
 # start of rules for process-exits and process-destination options
 # which may add info to a part of these highway=*_link roads:
 # motorway_link, trunk_link, primary_link, secondary_link, tertiary_link
-# build destination hint 
+# build destination hint
 mkgmap:dest_hint=*
   { set dest_hint = '${destination:ref|subst: =>} ${mkgmap:dest_hint|subst:;=> |subst:/=> }' |
-         '${ref|subst: =>} ${mkgmap:dest_hint|subst:;=> |subst:/=> }' | 
+         '${ref|subst: =>} ${mkgmap:dest_hint|subst:;=> |subst:/=> }' |
          '${mkgmap:dest_hint|subst:;=> |subst:/=> }';
        }
-# build exit hint 
-mkgmap:exit_hint=true 
-  { set exit_hint = 'Exit ${mkgmap:exit_hint_ref} ${mkgmap:exit_hint_name}' | 
-         'Exit ${mkgmap:exit_hint_ref} ${mkgmap:exit_hint_exit_to}' | 
+# build exit hint
+mkgmap:exit_hint=true
+  { set exit_hint = 'Exit ${mkgmap:exit_hint_ref} ${mkgmap:exit_hint_name}' |
+         'Exit ${mkgmap:exit_hint_ref} ${mkgmap:exit_hint_exit_to}' |
          'Exit ${mkgmap:exit_hint_exit_to}' |
          'Exit ${mkgmap:exit_hint_name}' |
          'Exit ${mkgmap:exit_hint_ref}';
        }
-  
-# use destination hint and/or exit hint to build name              
+
+# use destination hint and/or exit hint to build name
 (mkgmap:exit_hint=true | mkgmap:dest_hint=*)
   {	name '${exit_hint} ${dest_hint}' | 	'${dest_hint}' | 		'${exit_hint}' }
 # end of rules for process-exits and process-destination options
 
 # Flag paved roads
 highway=* & (
-   surface=asphalt        | surface=paved          | surface=sett | 
-   surface=concrete       | surface=concrete:lanes | surface=concrete:plates | 
+   surface=asphalt        | surface=paved          | surface=sett |
+   surface=concrete       | surface=concrete:lanes | surface=concrete:plates |
    surface=paving_stones  | surface=cobblestone    | surface=unhewn_cobblestone |
    surface=cobblestone:flattened  | surface=metal  | surface=wood) { set mkgmap:unpaved=0 }
 highway=* & tracktype=grade1 & surface!=* { set mkgmap:unpaved=0 }
 
 # Flag unpaved roads.
-highway=* & mkgmap:unpaved!=0 & (  
+highway=* & mkgmap:unpaved!=0 & (
    surface=unpaved | surface=compacted | surface=dirt        | surface=fine_gravel |
    surface=earth   | surface=grass     | surface=grass_paver | surface=woodchips |
    surface=gravel  | surface=grit      | surface=ground      | surface=mud |
    surface=pebblestone                 | surface=sand        | surface=unpaved | surface=salt |
-	mtb:scale=* | 
+	mtb:scale=* |
     tracktype ~ 'grade[2-6]') { add mkgmap:unpaved=1 }
 
 highway=* & (
@@ -287,17 +255,17 @@ highway=* & (
 (highway=bridleway | highway=path | highway=track) & mkgmap:unpaved!=0 { add mkgmap:unpaved=1 }
 (highway=unsurfaced | highway=via_ferrata) { set mkgmap:unpaved=1 }
 
-highway=* & mkgmap:unpaved!=1 & smoothness ~ '.*(bad|horrible|impassable)'  { add mkgmap:road-speed = '-2' } 
+highway=* & mkgmap:unpaved!=1 & smoothness ~ '.*(bad|horrible|impassable)'  { add mkgmap:road-speed = '-2' }
 
 ## Там где surface важнее класса
 mkgmap:unpaved=1 & highway=primary
-[0x12 road_class=1 road_speed=2 resolution 18]
+[0x0a road_class=1 road_speed=2 resolution 18]
 mkgmap:unpaved=1 & highway=secondary
-[0x12 road_class=1 road_speed=2 resolution 18]
+[0x0a road_class=1 road_speed=2 resolution 18]
 mkgmap:unpaved=1 & highway=tertiary
-[0x13 road_class=1 road_speed=2 resolution 19]
+[0x0a road_class=1 road_speed=2 resolution 19]
 mkgmap:unpaved=1 & highway=unclassified
-[0x13 road_class=1 road_speed=2 resolution 19]
+[0x0a road_class=1 road_speed=2 resolution 19]
 #####
 
 # Good ways without relation
@@ -328,16 +296,17 @@ junction=roundabout & (highway=primary | highway=primary_link) & mkgmap:fast_roa
 junction=roundabout & (highway=primary | highway=primary_link) [0x03 road_class=3 road_speed=2 resolution 21]
 junction=roundabout & (highway=secondary | highway=secondary_link) & mkgmap:fast_road=yes [0x04 road_class=3 road_speed=2 resolution 21]
 junction=roundabout & (highway=secondary | highway=secondary_link) [0x04 road_class=2 road_speed=2 resolution 21]
-junction=roundabout & (highway=tertiary | highway=tertiary_link) [0x11 road_class=1 road_speed=1 resolution 21]
+junction=roundabout & (highway=tertiary | highway=tertiary_link) [0x04 road_class=1 road_speed=1 resolution 21]
 junction=roundabout & (highway=unclassified | highway=minor ) [0x06 road_class=1 road_speed=1 resolution 21]
-junction=roundabout & highway=residential [0x0d road_class=0 road_speed=1 resolution 23]
-junction=roundabout & highway=residential [0x015 road_class=0 road_speed=1 resolution 22-22]
+junction=roundabout & highway=residential [0x06 road_class=0 road_speed=1 resolution 21]
+# junction=roundabout & highway=residential [0x0d road_class=0 road_speed=1 resolution 23]
+# junction=roundabout & highway=residential [0x015 road_class=0 road_speed=1 resolution 22-22]
 junction=roundabout & highway=* [0x0c road_class=0 road_speed=1 resolution 21]
 
 # Ways that may or may not be useable
 
 # Treat ways under construction almost as highway=path, see also extra rule in inc/access
-highway=construction { add mkgmap:dead-end-check = false; } 
+highway=construction { add mkgmap:dead-end-check = false; }
 #[0x16 road_class=0 road_speed=0 resolution 23]
 # highway=construction | highway=* & construction=* [0x0f road_class=0 road_speed=1 resolution 21 continue]
 highway=construction | highway=* & construction=* [0x10f19 resolution 21 continue]
@@ -372,8 +341,8 @@ highway=secondary & mkgmap:fast_road=yes [0x04 road_class=3 road_speed=3 resolut
 highway=secondary [0x04 road_class=2 road_speed=3 resolution 18]
 highway=secondary_link & mkgmap:fast_road=yes [0x04 road_class=3 road_speed=1 resolution 21]
 highway=secondary_link [0x04 road_class=2 road_speed=1 resolution 21]
-highway=tertiary [0x11 road_class=1 road_speed=3 resolution 19]
-highway=tertiary_link [0x11 road_class=1 road_speed=1 resolution 21]
+highway=tertiary [0x04 road_class=1 road_speed=3 resolution 19]
+highway=tertiary_link [0x04 road_class=1 road_speed=1 resolution 21]
 highway=minor [0x06 road_class=1 road_speed=3 resolution 22]
 highway=unclassified [0x06 road_class=0 road_speed=3 resolution 22]
 
@@ -381,8 +350,9 @@ highway=unclassified [0x06 road_class=0 road_speed=3 resolution 22]
 # To allow bicycling, add 'add bicycle=yes'
 highway=pedestrian & area!=yes [0x16 road_class=0 road_speed=0 resolution 22]
 highway=living_street & area!=yes [0x07 road_class=0 road_speed=0 resolution 24]
-highway=residential & area!=yes [0x0d road_class=0 road_speed=2 resolution 23 continue]
-highway=residential & area!=yes [0x15 road_class=0 road_speed=2 resolution 22-22]
+highway=residential & area!=yes [0x06 road_class=0 road_speed=2 resolution 22]
+# highway=residential & area!=yes [0x0d road_class=0 road_speed=2 resolution 23 continue]
+# highway=residential & area!=yes [0x15 road_class=0 road_speed=2 resolution 22-22]
 highway=bridleway [0x16 road_class=0 road_speed=0 resolution 22]
 highway=byway [0x16 road_class=0 road_speed=0 resolution 22]
 highway=raceway {setaccess 'no'} [0x07 road_class=0 road_speed=7 resolution 22]
@@ -391,7 +361,7 @@ highway=service & service=parking_aisle [0x07 road_class=0 road_speed=0 resoluti
 highway=service & service=emergency_access [0x07 road_class=0 road_speed=0 resolution 24]
 highway=service & service=drive-through [0x07 road_class=0 road_speed=0 resolution 24]
 highway=service & (service=alley|service=driveway) [0x07 road_class=0 road_speed=0 resolution 24]
-highway=service & living_street=yes & area!=yes [0x07 road_class=0 road_speed=0 resolution 24] 
+highway=service & living_street=yes & area!=yes [0x07 road_class=0 road_speed=0 resolution 24]
 highway=service & area!=yes [0x07 road_class=0 road_speed=2 resolution 22]
 
 highway=cycleway [0x16 road_class=0 road_speed=1 resolution 22]
@@ -406,7 +376,7 @@ highway=unsurfaced [0x0a road_class=0 road_speed=1 resolution 21]
 highway=road { add mkgmap:dead-end-check = false} [0x05 road_class=0 road_speed=1 resolution 21]
 
 # Mop up any unrecognised highway types
-highway=* & area!=yes [0x07 road_class=0 road_speed=0 resolution 22] 
+highway=* & area!=yes [0x07 road_class=0 road_speed=0 resolution 22]
 
 # natural=coastline [0x15 resolution 16 continue]
 
@@ -424,27 +394,27 @@ railway=* & disused=yes [0x0b road_class=0 road_speed=0 resolution 21]
 railway=abandoned | railway=disused  | (disused:railway=rail & railway!=disused) [0x0b road_class=0 road_speed=0 resolution 21]
 railway=narrow_gauge [0x10f05 resolution 18]
 railway=rail & service=*
-	{ name '${name} (${railway:track_ref})' 
-		| '${name} (${ref})' 
-		| '${railway:track_ref}' 
-		| '${ref}' 
+	{ name '${name} (${railway:track_ref})'
+		| '${name} (${ref})'
+		| '${railway:track_ref}'
+		| '${ref}'
 		| '${name}' } [0x10f05 resolution 24]
 railway=rail & service!=*
-	{ name '${name} (${railway:track_ref})' 
-		| '${name} (${ref})' 
-		| '${railway:track_ref}' 
-		| '${ref}' 
+	{ name '${name} (${railway:track_ref})'
+		| '${name} (${ref})'
+		| '${railway:track_ref}'
+		| '${ref}'
 		| '${name}' } [0x10f13 resolution 17]
 railway=tram	[0x10f14 resolution 22 continue]
 railway=light_rail & !(layer<0) [0x10f14 resolution 22]
 railway=monorail [0x10f14 resolution 22 continue]
 railway=subway & !(layer<0) [0x14 resolution 22]
 # railway=platform & area!=yes [0x16 road_class=0 road_speed=0 resolution 24 continue]
-(highway = platform | railway = platform ) & !(area = yes | is_closed() = true 
-	| tunnel = yes | location = underground)  
+(highway = platform | railway = platform ) & !(area = yes | is_closed() = true
+	| tunnel = yes | location = underground)
 	[0x16 road_class=0 road_speed=0 resolution 24 continue]
 
-# Railway lines, note that many devices display type 0x14 only at resolution 24 
+# Railway lines, note that many devices display type 0x14 only at resolution 24
 #(railway=rail | railway=tram | railway=disused | railway=subway | railway=narrow_gauge | railway=light_rail | railway=preserved) & !(tunnel=yes) [0x14 resolution 22]
 (railway=preserved) & !(tunnel=yes) [0x14 resolution 22]
 
@@ -455,15 +425,15 @@ railway=subway & !(layer<0) [0x14 resolution 22]
 
 # The following boundary styles are after the highway rules because ways
 # are frequently tagged with both and we want the highway to take priority.
-## Границы с названиями регионов берутся из отношения, 
+## Границы с названиями регионов берутся из отношения,
 ## а города из имени границы (полигона) с тегом name=*
 boundary=administrative & place!=* { name '${mkgmap:boundary_name}' }
 boundary=administrative { name '${mkgmap:boundary_name}' }
 boundary=administrative & admin_level<3 [0x1e resolution 16]
 boundary=administrative & admin_level<5 [0x1d resolution 16]
-boundary=administrative & admin_level<7 [0x1c resolution 19]
-boundary=administrative & admin_level<9 [0x1c resolution 21]
-boundary=administrative [0x1c resolution 22 continue]
+# boundary=administrative & admin_level<7 [0x1c resolution 19]
+# boundary=administrative & admin_level<9 [0x1c resolution 21]
+# boundary=administrative [0x1c resolution 22 continue]
 boundary=national [0x1e resolution 16]
 boundary=political [0x1c resolution 16]
 
@@ -499,18 +469,18 @@ leisure=nature_reserve | leisure=natural_reserve | landuse=nature_reserve | land
 #tourism=attraction & building!=* & man_made!=* {delete name} [0x1010d resolution 24 continue]
 #historic=ruins & building=yes {delete name} [0x1010d resolution 24 continue]
 #man_made=* & area!=no
-#   & (man_made!=door 
-#   & man_made!=embankment 
+#   & (man_made!=door
+#   & man_made!=embankment
 #   & man_made!=breakwater
 #   & man_made!=pier
-#   & man_made!=cable_line 
-#   & man_made!=cutline 
+#   & man_made!=cable_line
+#   & man_made!=cutline
 #   & man_made!=cutting
-#   & man_made!=levee 
+#   & man_made!=levee
 #   & man_made!=trench
 #   & man_made!=wastewater_plant
 #   & man_made!=surveillance
-#   & man_made!=groyne 
+#   & man_made!=groyne
 #   & man_made!=waterway
 #   & man_made!=reinforced_slope) {delete name} [0x1010d resolution 24 continue]
 ### Building Contours
@@ -523,7 +493,7 @@ include 'inc/contour_lines';
 
 include 'inc/address';
 # calculate the road speed based on maxspeed tag
-include 'inc/roadspeed'; 
+include 'inc/roadspeed';
 # calculate the access rules
 include 'inc/access';
 
@@ -537,12 +507,12 @@ mkgmap:synthesised=yes & mkgmap:bicycle=yes { set mkgmap:highest-resolution-only
 mkgmap:bicycle=yes & (mkgmap:foot=no & mkgmap:car=no & mkgmap:street!=* | mkgmap:synthesised=yes) {set mkgmap:numbers=false}
 
 ### Удаляем адреса с линий
-  waterway=canal 	| waterway=river		| waterway=rapid 
-| waterway=rapids 	| whitewater=rapid 		| whitewater=rapids 
-| waterway=drain 	| waterway=stream 		
-| (highway=path & name!=*)	
-| (highway=footway & name!=*) 
-| (highway=byway & name!=*) 
+  waterway=canal 	| waterway=river		| waterway=rapid
+| waterway=rapids 	| whitewater=rapid 		| whitewater=rapids
+| waterway=drain 	| waterway=stream
+| (highway=path & name!=*)
+| (highway=footway & name!=*)
+| (highway=byway & name!=*)
 | (highway=pedestrian & name!=*)
 | highway=cycleway
 | highway=bridleway
@@ -570,7 +540,7 @@ highway=primary & ref=*
 
 name=* { name '${name}' }
 
-highway=* & ref=* & highway!=motorway & highway!=trunk & highway!=primary & highway!=secondary & highway!=tertiary 
+highway=* & ref=* & highway!=motorway & highway!=trunk & highway!=primary & highway!=secondary & highway!=tertiary
 	{ set ref='${ref|subst:[\s-]~>|subst:[;]~>/}' addlabel '${ref}' }
 #highway=* & ref=*     { addlabel '${ref}' }
 highway=* & int_ref=* { set int_ref='${int_ref|subst:[\s-]~>|subst:[;,]~>/}' addlabel '${int_ref}' }

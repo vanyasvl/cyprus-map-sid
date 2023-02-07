@@ -18,5 +18,3 @@ highway=bridleway & mkgmap:country=NLD	{ add foot=yes }
 
 highway=trunk & mkgmap:country=ESP	{ add bicycle=yes; add foot=yes }
 highway=bridleway & mkgmap:country=ESP	{ add bicycle=yes; add foot=yes }
-
-

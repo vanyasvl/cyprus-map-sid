@@ -11,7 +11,7 @@ description~'.*(\u00bb+).*' {set description='${description|subst:[\u00bb+]~>}'}
 
 # delete FIXME values (they should be better used in maintenance maps)
 # better use option --ignore-fixme-values
-ref ~ '(?i)fix[ _]?+me'		{ delete ref; } 
+ref ~ '(?i)fix[ _]?+me'		{ delete ref; }
 operator ~ '(?i)fix[ _]?+me'	{ delete operator; }
 brand ~ '(?i)fix[ _]?+me'		{ delete brand; }
 name ~ '(?i)fix[ _]?+me'		{ delete name; }
@@ -30,8 +30,8 @@ description="farmland of local importance" {delete description}
 
 # Description to Name
 # (дублируется в файле lines)
-place=* & description=* { delete description } 
-(name=* & description=*)|(name=* & description!=*)|(name!=* & description=*) 
+place=* & description=* { delete description }
+(name=* & description=*)|(name=* & description!=*)|(name!=* & description=*)
 	{ set name='${name} (${description})'|'${name}'|'${description}' }
 
 # delete duplicate names
@@ -69,41 +69,11 @@ operator=* & brand!=* {
 
 brand=* & operator!=* {
  name '${name}: ${brand} ${ref}' |
-      '${name}: ${brand}' | 
+      '${name}: ${brand}' |
       '${brand}: ${ref}' |
       '${brand}' |
       '${ref}'
 }
-
-
-### налаживаем поиск для СНТ, КП и др.
-# переносим статус в конец и добавляем круглые скобки
-(place=allotments | landuse=*) & name ~ '.*([Сс][Нн][Тт]).*' 
-	{set name='${name|subst:([Сс][Нн][Тт])~>} (СНТ)'}
-(place=allotments | landuse=*) & name ~ '.*([Дд][Нн][Тт]).*' 
-	{set name='${name|subst:([Дд][Нн][Тт])~>} (ДНТ)'}
-(place=allotments | landuse=*) & name ~ '.*([Дд][Нн][Пп]).*' 
-	{set name='${name|subst:([Дд][Нн][Пп])~>} (ДНП)'}
-(place=allotments | landuse=*) & name ~ '.*([Сс]адовое [Тт]оварищество).*' 
-	{set name='${name|subst:([Сс]адовое [Тт]оварищество)~>} (СТ)'}
-(place=allotments | landuse=*) & name ~ '.*([Сс]/[Тт]).*' 
-	{set name='${name|subst:([Сс]/[Тт])~>} (СТ)'}
-(place=allotments | landuse=*) & name ~ '.*([Кк]оттеджный [Пп]оселок).*' 
-	{set name='${name|subst:([Кк]оттеджный [Пп]оселок)~>} (КП)'}
-(place=allotments | landuse=*) & name ~ '.*([Кк]оттеджный [Пп]осёлок).*' 
-	{set name='${name|subst:([Кк]оттеджный [Пп]осёлок)~>} (КП)'}
-(place=allotments | landuse=*) & name ~ '.*([Кк][Пп]) ' 
-	{set name='${name|subst:(^[Кк][Пп] )~>} (КП)'}
-(place=allotments | landuse=*) & name ~ '.*([Сс][Дд][Тт]).*' 
-	{set name='${name|subst:([Сс][Дд][Тт])~>} (СДТ)'}
-(place=allotments | landuse=*) & name ~ '.*([Дд][Сс][Кк]).*' 
-	{set name='${name|subst:([Дд][Сс][Кк])~>} (ДСК)'}
-(place=allotments | landuse=*) & name ~ '(^[Сс][Тт] ).*' 
-	{set name='${name|subst:(^[Сс][Тт] )~>} (СТ)'}
-(place=allotments | landuse=*) & name ~ '(^[Дд][Пп] ).*' 
-	{set name='${name|subst:(^[Дд][Пп] )~>} (ДП)'}
-(place=allotments | landuse=*) & name ~ '.*([Сс][Оо][Тт] ).*' 
-	{set name='${name|subst:([Сс][Оо][Тт] )~>} (СОТ)'}
 
 # удаляем пробел в начале названия
 name ~ '(^\s).*' {set name='${name|subst:(^\s)~>}'}

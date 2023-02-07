@@ -11,22 +11,15 @@
 addr:housenumber=* {set mkgmap:execute_finalize_rules=true}
 
 include 'inc/name';
-include 'inc/status';
 ####### Language secific translations
-if (mkgmap:option:code-page=1251) then
-include "inc/name-ru";
-end
-if (mkgmap:option:code-page=1250) then
 include "inc/name-en";
-end
-####### Language secific translations
 
 # boundary=administrative & admin_level=2 [0x53 resolution 16-18]
 
 # Удаляем ошибочный landuse=residential
 (place=city | place=town | place=suburb | place=village | place=hamlet | place=isolated_dwelling | place=locality) & landuse=residential {delete landuse}
 
-# Удаляем не нужный tourism (Hawaii island) 
+# Удаляем не нужный tourism (Hawaii island)
 tourism=destination {delete tourism}
 # Удаляем не нужный building=no
 building=no {delete building}
@@ -51,81 +44,81 @@ man_made=works & (building!=* | building=no) [0x0c resolution 21]
 
 man_made=mine [0x0c resolution 21]
 
-# Пирсы 
+# Пирсы
 man_made=pier | man_made=breakwater [0x10f11 resolution 22]
 
 # Все бесхозные man_made до зданий
 man_made=* & landuse=* {delete man_made}
 
 # здания с улицами, номерами домов и, если есть, с названиями
-man_made=* & area=yes {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber}' 
-	| '${addr:housenumber} ${addr:unit}' 
-	| '${addr:housenumber}' 
+man_made=* & area=yes {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+	| '${addr:street} ${addr:housenumber} ${name}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber}'
+	| '${addr:housenumber} ${addr:unit}'
+	| '${addr:housenumber}'
 	| '${name} ${addr:unit}'
 	| '${name}'} [0x13 resolution 24]
-#man_made=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-#	| '${addr:street} ${addr:housenumber} ${name}' 
-#	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-#	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-#	| '${addr:street} ${addr:housenumber}' 
-#	| '${addr:housenumber} ${addr:unit}' 
-#	| '${addr:housenumber}' 
+#man_made=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+#	| '${addr:street} ${addr:housenumber} ${name}'
+#	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+#	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+#	| '${addr:street} ${addr:housenumber}'
+#	| '${addr:housenumber} ${addr:unit}'
+#	| '${addr:housenumber}'
 #	| '${name} ${addr:unit}'
 #	| '${name}'} [0x13 resolution 24]
-(building=* | bridge=yes & area=yes) {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber}' 
-	| '${addr:housenumber} ${addr:unit}' 
-	| '${addr:housenumber}' 
+(building=* | bridge=yes & area=yes) {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+	| '${addr:street} ${addr:housenumber} ${name}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber}'
+	| '${addr:housenumber} ${addr:unit}'
+	| '${addr:housenumber}'
 	| '${name} ${addr:unit}'
 	| '${name}'} [0x13 resolution 24]
-tourism=attraction & building!=* & man_made!=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber}' 
-	| '${addr:housenumber} ${addr:unit}' 
-	| '${addr:housenumber}' 
+tourism=attraction & building!=* & man_made!=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+	| '${addr:street} ${addr:housenumber} ${name}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber}'
+	| '${addr:housenumber} ${addr:unit}'
+	| '${addr:housenumber}'
 	| '${name} ${addr:unit}'
 	| '${name}'} [0x10f19 resolution 21]
-tourism=* & building!=* & boundary!=* & man_made!=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber}' 
-	| '${addr:housenumber} ${addr:unit}' 
-	| '${addr:housenumber}' 
+tourism=* & building!=* & boundary!=* & man_made!=* {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+	| '${addr:street} ${addr:housenumber} ${name}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber}'
+	| '${addr:housenumber} ${addr:unit}'
+	| '${addr:housenumber}'
 	| '${name} ${addr:unit}'
 	| '${name}'} [0x10f19 resolution 21]
 
 # man_made can be used on areas or lines
 man_made=* & area!=no
-   & (man_made!=door 
-   & man_made!=embankment 
+   & (man_made!=door
+   & man_made!=embankment
    & man_made!=breakwater
-   & man_made!=cable_line 
-   & man_made!=cutline 
+   & man_made!=cable_line
+   & man_made!=cutline
    & man_made!=cutting
-   & man_made!=levee 
+   & man_made!=levee
    & man_made!=trench
    & man_made!=wastewater_plant
    & man_made!=surveillance
-   & man_made!=groyne 
+   & man_made!=groyne
    & man_made!=waterway
    & man_made!=reinforced_slope)
-	{name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber}' 
-	| '${addr:housenumber} ${addr:unit}' 
-	| '${addr:housenumber}' 
+	{name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+	| '${addr:street} ${addr:housenumber} ${name}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber}'
+	| '${addr:housenumber} ${addr:unit}'
+	| '${addr:housenumber}'
 	| '${name} ${addr:unit}'
 	| '${name}'}[0x13 resolution 24]
 
@@ -175,23 +168,23 @@ leisure=recreation_ground [0x17 resolution 21]
 #leisure=sports_center | leisure=sports_centre [0x19 resolution 20]
 leisure=sports_center | leisure=sports_centre { name '${name}' } [0x10612 resolution 22]
 #leisure=stadium [0x19 resolution 20]
-leisure=stadium { name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber}' 
-	| '${addr:housenumber} ${addr:unit}' 
-	| '${addr:housenumber}' 
+leisure=stadium { name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+	| '${addr:street} ${addr:housenumber} ${name}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber}'
+	| '${addr:housenumber} ${addr:unit}'
+	| '${addr:housenumber}'
 	| '${name} ${addr:unit}'
 	| '${name}'} [0x19 resolution 22]
 # leisure=swimming_pool | amenity=swimming_pool {set sport=swimming}
-# leisure=swimming_pool { name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-#	| '${addr:street} ${addr:housenumber} ${name}' 
-#	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-#	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-#	| '${addr:street} ${addr:housenumber}' 
-#	| '${addr:housenumber} ${addr:unit}' 
-#	| '${addr:housenumber}' 
+# leisure=swimming_pool { name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+#	| '${addr:street} ${addr:housenumber} ${name}'
+#	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+#	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+#	| '${addr:street} ${addr:housenumber}'
+#	| '${addr:housenumber} ${addr:unit}'
+#	| '${addr:housenumber}'
 #	| '${name} ${addr:unit}'
 #	| '${name}'} [0x19 resolution 24]
 leisure=swimming_pool | amenity=swimming_pool [0x3e resolution 24]
@@ -222,11 +215,11 @@ place=allotments & landuse!=residential & landuse!=allotments [0x03 resolution 2
 shop=* & building!=* [0x08 resolution 21]
 
 ## Площадки на заправках
-highway=* & amenity=fuel | amenity=fuel & area=yes 
+highway=* & amenity=fuel | amenity=fuel & area=yes
 	{delete highway; set highway=rest_area; set area=yes}
 # squares and plazas
 #highway=pedestrian & (area=yes | mkgmap:mp_created=true) [0x17 resolution 22]
-highway=pedestrian & (area=yes | mkgmap:mp_created=true) 
+highway=pedestrian & (area=yes | mkgmap:mp_created=true)
 	| highway=rest_area & (area=yes | mkgmap:mp_created=true)
 	| highway=living_street & (area=yes | mkgmap:mp_created=true)
 	| highway=residential & (area=yes | mkgmap:mp_created=true)
@@ -246,13 +239,13 @@ highway=* & (area=yes | mkgmap:mp_created=true) [0x05 resolution 21]
 
 historic=museum | historic=memorial [0x1e resolution 21]
 historic=archaeological_site | historic=ruins [0x1e resolution 21]
-historic=ruins & building=yes {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${name}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber} ${addr:unit}' 
-	| '${addr:street} ${addr:housenumber}' 
-	| '${addr:housenumber} ${addr:unit}' 
-	| '${addr:housenumber}' 
+historic=ruins & building=yes {name '${addr:street} ${addr:housenumber} ${addr:unit} ${name}'
+	| '${addr:street} ${addr:housenumber} ${name}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber} ${addr:unit}'
+	| '${addr:street} ${addr:housenumber}'
+	| '${addr:housenumber} ${addr:unit}'
+	| '${addr:housenumber}'
 	| '${name} ${addr:unit}'
 	| '${name}'} [0x13 resolution 24]
 
@@ -287,7 +280,7 @@ landcover=trees & natural!=wood & landuse!=forest & (wood=coniferous | leaf_type
 landcover=trees & natural!=wood & landuse!=forest & (wood=deciduous | leaf_type=broadleaved)   [0x10101 resolution 21]
 landcover=trees & natural!=wood & landuse!=forest [0x50 resolution 21]
 
-# render small named islands 
+# render small named islands
 # place=island & name=* & area_size() < 1000000 [0x53 resolution 18]
 place=island & name=* [0x53 resolution 18]
 place=islet & name=* [0x53 resolution 19]

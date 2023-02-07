@@ -1,7 +1,7 @@
 #
 # This file contains information about the style.
 # It is completely optional.
-# 
+#
 
 
 # A short one line description of the style
@@ -14,7 +14,5 @@ version=1.0
 
 # A longer description of the style.
 description {
-The default style.  This is a heavyweight style that is
-designed for use when mapping and especially in lightly covered
-areas.
+  Modified maptourist style by Ivan Semenov
 }

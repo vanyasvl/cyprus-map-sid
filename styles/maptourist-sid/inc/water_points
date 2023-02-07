@@ -1,4 +1,4 @@
-# landuse=basin | landuse=reservoir [0x650f resolution 21]
+landuse=basin | landuse=reservoir [0x650f resolution 21]
 
 # Edge 705 displays 0x650a,0x6511,0x6512,0x6513,0x6603,0x6614 as hollow white circles, no menu
 
@@ -12,10 +12,10 @@ natural=stream & name=* [0x6512 resolution 22]
 natural=water & name=* & water!=wastewater [0x650d resolution 21]
 (landuse=reservoir | (natural=water & water=reservoir)) & water!=wastewater & name=* [0x650f resolution 21]
 natural=waterfall | waterway=waterfall | waterway=weir [0x6508 resolution 21]
-(natural=wetland | natural=marsh | natural=swamp | natural=mud | natural=bog) 
+(natural=wetland | natural=marsh | natural=swamp | natural=mud | natural=bog)
 	& name=* [0x6513 resolution 21]
 
-# точки из Whitewater 
+# точки из Whitewater
 # http://wiki.openstreetmap.org/wiki/WikiProject_Whitewater_Maps
 waterway=rapid | waterway=rapids | whitewater=rapid | whitewater=rapids
     {name '${whitewater:section_name} (r${whitewater:rapid_grade} s${whitewater:section_grade})'
@@ -28,7 +28,7 @@ waterway=rapid | waterway=rapids | whitewater=rapid | whitewater=rapids
 	| '${whitewater:section_name}'
 	| '${whitewater:rapid_name}'
 	| '${name}' } [0x650e resolution 24 continue]
-whitewater='put_in;egress' [0x6516 resolution 24] 
+whitewater='put_in;egress' [0x6516 resolution 24]
 #whitewater ~ 'put_in\p{Punct}egress' [0x6516 resolution 24]
 whitewater=egress	  [0x6514 resolution 24]
 whitewater=put_in	  [0x6515 resolution 24]

@@ -10,42 +10,40 @@
 
 addr:housenumber=* {set mkgmap:execute_finalize_rules=true}
 
-include 'inc/status';
-
 boundary=administrative & admin_level=2 [0x01f00 resolution 16-16]
 boundary=administrative & admin_level=4 [0x01f00 resolution 16-16]
 
 barrier=* & bicycle=*    { set mkgmap:bicycle='${bicycle|subst:private=>no}' }
-barrier=* & foot=*       { set mkgmap:foot='${foot|subst:private=>no}' }                  
-barrier=* & hgv=*        { set mkgmap:truck='${hgv|subst:private=>no}' }                  
+barrier=* & foot=*       { set mkgmap:foot='${foot|subst:private=>no}' }
+barrier=* & hgv=*        { set mkgmap:truck='${hgv|subst:private=>no}' }
 barrier=* & motorcar=*   { set mkgmap:car='${motorcar|subst:private=>no}' }
-barrier=* & psv=*        { set mkgmap:bus='${psv|subst:private=>no}' }                  
-barrier=* & taxi=*       { set mkgmap:taxi='${taxi|subst:private=>no}' }                  
-barrier=* & emergency=*  { set mkgmap:emergency='${emergency|subst:private=>no}' }                  
-barrier=* & delivery=*   { set mkgmap:delivery='${delivery|subst:private=>no}' }                  
+barrier=* & psv=*        { set mkgmap:bus='${psv|subst:private=>no}' }
+barrier=* & taxi=*       { set mkgmap:taxi='${taxi|subst:private=>no}' }
+barrier=* & emergency=*  { set mkgmap:emergency='${emergency|subst:private=>no}' }
+barrier=* & delivery=*   { set mkgmap:delivery='${delivery|subst:private=>no}' }
 barrier=* & access=*     { addaccess '${access|subst:private=>no}' }
 
 # часы работы добавляем в почтовый индекс
 opening_hours=* {set addr:postcode = '${addr:postcode} open ${opening_hours}' | 'open ${opening_hours}'}
 
-barrier=bollard | barrier=cycle_barrier 
-    { add mkgmap:bicycle=yes; 
-      add mkgmap:foot=yes; 
+barrier=bollard | barrier=cycle_barrier
+    { add mkgmap:bicycle=yes;
+      add mkgmap:foot=yes;
       addaccess no;
       set mkgmap:road-speed=1; }
-barrier=bus_trap  
-    { add mkgmap:bus=yes; 
-      add mkgmap:foot=yes; 
-      add mkgmap:bicycle=yes; 
+barrier=bus_trap
+    { add mkgmap:bus=yes;
+      add mkgmap:foot=yes;
+      add mkgmap:bicycle=yes;
       addaccess no;
       set mkgmap:road-speed=1; }
 barrier=gate | barrier=sliding_gate
-    { add mkgmap:bicycle=yes; 
-      add mkgmap:foot=yes; 
+    { add mkgmap:bicycle=yes;
+      add mkgmap:foot=yes;
       addaccess no;
       set mkgmap:road-speed=0; }
 barrier=kissing_gate | barrier=stile | barrier=block | barrier=log
-    { add mkgmap:foot=yes; 
+    { add mkgmap:foot=yes;
       addaccess no;
       set mkgmap:road-speed=0; }
 
@@ -73,34 +71,34 @@ internet_access=* & internet_access!=no & internet_access!=yes { name 'Internet(
 }
 
 ### Точки зданий с адресом для поиска
-man_made=* & area=yes & addr:housenumber=* 
+man_made=* & area=yes & addr:housenumber=*
 	{name '${addr:housenumber} ${addr:unit}'
-	    | '${addr:housenumber}'} [0x03302 resolution 24 continue]
-(building=* | bridge=yes & area=yes) & addr:housenumber=* 
+			| '${addr:housenumber}'} [0x03302 resolution 24 continue]
+(building=* | bridge=yes & area=yes) & addr:housenumber=*
 	{name '${addr:housenumber} ${addr:unit}'
-	    | '${addr:housenumber}'} [0x03302 resolution 24 continue]
-man_made=* & area!=no 
-	 & (man_made!=door & man_made!=embankment & man_made!=breakwater
-	 & man_made!=cable_line & man_made!=cutline & man_made!=cutting
-	 & man_made!=levee & man_made!=trench & man_made!=groyne 
-	 & man_made!=reinforced_slope) 
-           & addr:housenumber=*
+			| '${addr:housenumber}'} [0x03302 resolution 24 continue]
+man_made=* & area!=no
+	& (man_made!=door & man_made!=embankment & man_made!=breakwater
+	& man_made!=cable_line & man_made!=cutline & man_made!=cutting
+	& man_made!=levee & man_made!=trench & man_made!=groyne
+	& man_made!=reinforced_slope)
+	& addr:housenumber=*
 	{name '${addr:housenumber} ${addr:unit}'
-	    | '${addr:housenumber}'} [0x03302 resolution 24 continue]
+			| '${addr:housenumber}'} [0x03302 resolution 24 continue]
 historic=ruins & building=yes & addr:housenumber=*
 	{name '${addr:housenumber} ${addr:unit}'
-	    | '${addr:housenumber}'} [0x03302 resolution 24 continue]
+			| '${addr:housenumber}'} [0x03302 resolution 24 continue]
 # отдельностоящие точки с адресной информацией
 place!=* & liesure!=* & amenity!=* & shop!=* & building!=* & man_made!=* & historic!=*
 & addr:city=* & addr:street=* & addr:housenumber=* & addr:postcode=* & mkgmap:area2poi!=true
 	{name '${addr:housenumber} ${addr:unit}'
-	    | '${addr:housenumber}'} [0x03302 resolution 24 continue]
+			| '${addr:housenumber}'} [0x03302 resolution 24 continue]
 # With street name
 #	{name '${addr:street} ${addr:housenumber} ${addr:unit}'
-#	    | '${addr:street} ${addr:housenumber}' 
-#	    | '${addr:housenumber} ${mkgmap:admin_level7}' 
-#	    | '${addr:housenumber} ${mkgmap:admin_level11}' 
-#	    | '${addr:housenumber} ${mkgmap:admin_level8}' 
+#	    | '${addr:street} ${addr:housenumber}'
+#	    | '${addr:housenumber} ${mkgmap:admin_level7}'
+#	    | '${addr:housenumber} ${mkgmap:admin_level11}'
+#	    | '${addr:housenumber} ${mkgmap:admin_level8}'
 #	    | '${addr:housenumber}'} [0x2f15 resolution 24 continue]
 ###
 
@@ -119,13 +117,7 @@ sport=skiing [0x2d06 resolution 24]
 sport=swimming [0x2d09 resolution 24]
 
 ####### Language secific translations
-if (mkgmap:option:code-page=1251) then
-include "inc/name-ru";
-end
-if (mkgmap:option:code-page=1250) then
 include "inc/name-en";
-end
-####### Language secific translations
 include 'inc/name';
 
 ###place=city & population > 999999 & name=*  {set cityxx=yes} [0x0100 resolution 12 continue with_actions]
@@ -176,10 +168,12 @@ place=neighbourhood & name=* & mkgmap:area2poi!=true [0x0b00 resolution 22]
 #place=locality & mkgmap:area2poi!=true	[0x0a00 resolution 21]
 
 #aeroway=airport [0x5900 resolution 18]
-aeroway=airport [0x2f04 resolution 18]
-aeroway=aerodrome [0x2f04 resolution 18]
+aeroway=airport [0x2f04 resolution 24 continue]
+aeroway=airport [0x11606 resolution 24-18]
+aeroway=aerodrome [0x2f04 resolution 24 continue]
+aeroway=aerodrome [0x11606 resolution 24-18]
 aeroway=helipad [0x5904 resolution 21]
-aeroway=terminal [0x2f04 resolution 21]
+aeroway=terminal [0x2f04 resolution 22]
 aeroway=gate {name '${ref}'|'${name}'} [0x10601 resolution 24]
 
 amenity=airport [0x2f04 resolution 18]
@@ -192,9 +186,9 @@ amenity=biergarten [0x2d02 resolution 24]
 amenity=border_control | barrier=border_control [0x3006 resolution 21]
 # amenity=bus_station [0x2f08 resolution 21]
 amenity=cafe [0x2a0e resolution 24]
-amenity=car_club [0x2f0d resolution 24]
-amenity=car_rental [0x2f02 resolution 24]
-amenity=car_sharing [0x2f02 resolution 24]
+# amenity=car_club [0x2f0d resolution 24]
+# amenity=car_rental [0x2f02 resolution 24]
+# amenity=car_sharing [0x2f02 resolution 24]
 amenity=car_wash [0x2f0e resolution 24]
 amenity=casino | amenity=gambling | leisure=adult_gaming_centre [0x2d04 resolution 24]
 amenity=cinema [0x2d03 resolution 24]
@@ -208,7 +202,7 @@ amenity=courthouse [0x3004 resolution 24]
 amenity=drinking_water | man_made=water_well [0x5000 resolution 24]
 #amenity=embassy & country=* { set name='${country} ${name|def:}' } [0x3003 resolution 24]
 amenity=embassy & country=* { set name='${name|def:} (${country})' } [0x3003 resolution 24]
-# amenity=embassy & country!=* [0x3003 resolution 24 default_name 'Embassy'] named in language specific inc/name-ru & inc/name-en 
+# amenity=embassy & country!=* [0x3003 resolution 24 default_name 'Embassy'] named in language specific inc/name-ru & inc/name-en
 amenity=embassy & country!=* [0x3003 resolution 24]
 amenity=emergency_phone [0x2f12 resolution 21]
 #amenity=ferry_terminal [0x2f08 resolution 21]
@@ -222,12 +216,13 @@ amenity=bench [0x04a01 resolution 24]
 
 amenity=charging_station { name '${name} (${voltage}v)' | '${name}' | '${voltage}v' } [0x2f16 resolution 19]
 amenity=fuel [0x2f01 resolution 24 continue]
-amenity=fuel [0x11603 resolution 24-20]
+amenity=fuel [0x11603 resolution 24-22]
 #amenity=fuel & fuel:HGV_diesel=yes [0x2f16 resolution 19] # точка перемещена в typ 2f19
 #amenity=fuel & fuel:HGV_diesel=yes { name '${name} (D)' | 'Diesel Fuel' } [0x2f16 resolution 19]
-amenity=fuel & shop=convenience [ 0x2e06 resolution 18]
+amenity=fuel & shop=convenience [ 0x2e06 resolution 22]
 waterway=fuel [0x2f01 resolution 24 continue]
-waterway=fuel [0x11603 resolution 24-20]
+waterway=fuel [0x11603 resolution 24-22]
+
 
 #amenity=fuel & fuel:diesel=yes & fuel:lpg=yes { name '${name} (D, LPG)' | '${operator} (D, LPG)' | 'Gas D, LPG'}
 #amenity=fuel & fuel:diesel=yes { name '${name} (D)' | '${operator} (D)' | 'Gas (D)'}
@@ -245,17 +240,17 @@ amenity=pharmacy [0x2e05 resolution 24]
 
 # Храмы по религиям
 amenity=place_of_worship [0x2c0b resolution 24 continue] # Невидимая точка для поиска храмов
-amenity=place_of_worship & religion=christian 	[0x11701 resolution 21]
-amenity=place_of_worship & religion=buddhist 	[0x11702 resolution 21]
-amenity=place_of_worship & religion=hindu 	[0x11703 resolution 21]
-amenity=place_of_worship & religion=jewish 	[0x11704 resolution 21]
-amenity=place_of_worship & religion=muslim 	[0x11705 resolution 21]
-amenity=place_of_worship & religion=shinto 	[0x11706 resolution 21]
-amenity=place_of_worship & religion=sikh 	[0x11708 resolution 21]
-amenity=place_of_worship & religion=taoist 	[0x11709 resolution 21]
-amenity=place_of_worship & religion=scientologist 	[0x11710 resolution 21]
-amenity=place_of_worship & religion=zoroastrian 	[0x11711 resolution 21]
-amenity=place_of_worship [0x11700 resolution 21]
+amenity=place_of_worship & religion=christian 	[0x11701 resolution 24]
+amenity=place_of_worship & religion=buddhist 	[0x11702 resolution 24]
+amenity=place_of_worship & religion=hindu 	[0x11703 resolution 24]
+amenity=place_of_worship & religion=jewish 	[0x11704 resolution 24]
+amenity=place_of_worship & religion=muslim 	[0x11705 resolution 24]
+amenity=place_of_worship & religion=shinto 	[0x11706 resolution 24]
+amenity=place_of_worship & religion=sikh 	[0x11708 resolution 24]
+amenity=place_of_worship & religion=taoist 	[0x11709 resolution 24]
+amenity=place_of_worship & religion=scientologist 	[0x11710 resolution 24]
+amenity=place_of_worship & religion=zoroastrian 	[0x11711 resolution 24]
+amenity=place_of_worship [0x11700 resolution 24]
 #amenity=place_of_worship [0x11602 resolution 21 continue]
 #amenity=place_of_worship [0x2c0b resolution 24]
 
@@ -264,9 +259,9 @@ amenity=post_office [0x2f05 resolution 24]
 amenity=prison [0x3009 resolution 24]
 amenity=pub [0x2d02 resolution 24]
 amenity=public_building [0x3007 resolution 24]
-#amenity=recycling [0x2f15 resolution 24]
-amenity=recycling | amenity=waste_disposal { name '${name} (${operator})' | '${name}' | '${operator}' }
-amenity=recycling | amenity=waste_disposal [0x3300 resolution 24]
+# amenity=recycling [0x2f15 resolution 24]
+# amenity=recycling | amenity=waste_disposal { name '${name} (${operator})' | '${name}' | '${operator}' }
+# amenity=recycling | amenity=waste_disposal [0x3300 resolution 24]
 # amenity=waste_basket
 
 amenity=restaurant & cuisine=american 	[0x2a01 resolution 24]
@@ -323,15 +318,15 @@ highway=motorway_junction [0x2100 resolution 24]
 #highway=services & mkgmap:area2poi!=true [0x210f resolution 24 default_name 'Services']
 highway=services & mkgmap:area2poi!=true [0x210f resolution 24]
 
-(highway=milestone | railway=milestone) & pk=* 
+(highway=milestone | railway=milestone) & pk=*
 	{set distance='${pk}'; delete pk}
-(highway=milestone | railway=milestone) & pk:backward=* 
+(highway=milestone | railway=milestone) & pk:backward=*
 	{set distance:backward='${pk:backward}'; delete pk:backward}
-(highway=milestone | railway=milestone) & plk:backward=* 
+(highway=milestone | railway=milestone) & plk:backward=*
 	{set distance:backward='${plk:backward}'; delete plk:backward}
 highway=milestone | railway=milestone
-	{name '${distance} (${distance:backward})' 
-		| '${distance}' 
+	{name '${distance} (${distance:backward})'
+		| '${distance}'
 		| '${distance:backward}'} [0x05a00 resolution 22]
 # highway=milestone | railway=milestone { name '${distance}'  | '${pk}' | '${pk:backward}' } [0x05a00 resolution 24]
 
@@ -344,7 +339,7 @@ historic=fort [0x11604 resolution 21]
 historic=castle [0x11604 resolution 21]
 historic=boundary_stone | historic=milestone [0x11500 resolution 24]
 historic=tomb|cemetery=grave [0x6403 resolution 24]
-historic=wreck | seamark:type=wreck [0x4200 resolution 21]
+historic=wreck | seamark:type=wreck [0x4200 resolution 22]
 
 # Резервации
 (boundary=protected_area & protect_class=24) | boundary=aboriginal_lands [0x6612 resolution 18]
@@ -378,13 +373,13 @@ man_made=windmill [0x641b resolution 22]
 man_made=water_tower | building=water_tower [0x1151b resolution 22]
 
 # Edge 705 displays 0x650a,0x6511,0x6512,0x6513,0x6603,0x6614 as hollow white circles, no menu
-natural=cave_entrance | man_made=adit [0x6601 resolution 21]
-natural=cliff [0x6607 resolution 19]
-natural=peak | natural=hill | landmark=rock_pinnacle {name '${name|def:}${ele|height:m=>ft|def:}' } [0x6616 resolution 19]
-natural=rock | landmark=large_rock {name '${name|def:}${ele|height:m=>ft|def:}' } [0x6614 resolution 19]
-natural=volcano [0x05203 resolution 18]
-natural=reef [0x1040c resolution 18]
-natural=valley & name=* [0x6617 resolution 21]
+natural=cave_entrance | man_made=adit [0x6601 resolution 24]
+natural=cliff [0x6607 resolution 24]
+natural=peak | natural=hill | landmark=rock_pinnacle {name '${name|def:}${ele|height:m=>ft|def:}' } [0x6616 resolution 20]
+natural=rock | landmark=large_rock {name '${name|def:}${ele|height:m=>ft|def:}' } [0x6614 resolution 24]
+natural=volcano [0x05203 resolution 20]
+natural=reef [0x1040c resolution 20]
+natural=valley & name=* [0x6617 resolution 22]
 
 # natural=beach [0x6604 resolution 24] ### in ./inc/water_points
 # natural=glacier [0x650a resolution 21] ### in ./inc/water_points
@@ -392,12 +387,12 @@ natural=valley & name=* [0x6617 resolution 21]
 # natural=hot_spring [0x13703 resolution 22] ### in ./inc/water_points
 # natural=stream & name=* [0x6512 resolution 22] ### in ./inc/water_points
 
-natural=ridge & name=* [0x06613 resolution 21]
-natural=stone [0x6615 resolution 21]
+natural=ridge & name=* [0x06613 resolution 22]
+natural=stone [0x6615 resolution 24]
 
 # Перевалы с высотой и классом сложности
 mountain_pass=yes {name
-	 '${name} (${alt_name}), ${ele} (${rtsa_scale})'
+		'${name} (${alt_name}), ${ele} (${rtsa_scale})'
 	| '${name}, ${ele} (${rtsa_scale})'
 	| '${name} (${alt_name}), ${ele} (${pass:category})'
 	| '${name}, ${ele} (${pass:category})'
@@ -414,18 +409,18 @@ mountain_pass=yes {name
 	| '${rtsa_scale}'
 	| '${name} (${alt_name})'
 	| '${name}'
-	| '${alt_name})' } [0x06613 resolution 21] 
+	| '${alt_name})' } [0x06613 resolution 21]
 
 # станция метро
 (railway=station & station=subway) | (railway=station & subway=yes) [0x1150f resolution 22-19]
 
 # Ж/Д-точка на здании вокзала
-(building=train_station 
-	| public_transport=train_station) 
+(building=train_station
+	| public_transport=train_station)
 		& name=* [0x2f17 resolution 24]
-# 	| (public_transport=station & building=yes) 
-#(building=train_station 
-#	| public_transport=train_station) 
+# 	| (public_transport=station & building=yes)
+#(building=train_station
+#	| public_transport=train_station)
 #		& name=* [0x11601 resolution 22-21]
 
 #railway=station [0x2f08 resolution 22]
@@ -441,8 +436,8 @@ public_transport=stop_position & train=yes [0x2f17 resolution 24]
 
 #( public_transport=platform & rail=yes ) | railway=halt [0x2f08 resolution 23]
 public_transport=platform & !(layer<0) & railway!=platform
-	| highway=bus_stop 
-	| amenity=bus_station 
+	| highway=bus_stop
+	| amenity=bus_station
 	| railway=tram_stop [0x2f08 resolution 22]
 
 shop=bakers [0x2e02 resolution 24]
@@ -463,7 +458,7 @@ shop=car_repair [0x2f03 resolution 24]
 shop=car_wrecker [0x2f0a resolution 24]
 
 shop=outdoor [0x10f12 resolution 24]
-shop=optician [0x2e05 resolution 24] # оптика, как аптека
+shop=optician [0x2e05 resolution 24]
 shop=chemist [0x2e08 resolution 24]
 shop=clothes [0x2e07 resolution 24]
 (shop=computer | shop=electronics) [0x10f0c resolution 24]
@@ -489,12 +484,12 @@ shop=* & shop!=no & shop!=none [0x2e00 resolution 24]
 
 # tourism=alpine_hut [0x2b02 resolution 24]
 # обходим появление точек на всех полигонах building=yes с опцией --add-pois-to-areas
-# теперь отдельные точки с building=yes не тянут за собой порождение тучи 
+# теперь отдельные точки с building=yes не тянут за собой порождение тучи
 # аналогичных на всех полигональных зданиях! Волшебное слово - "& mkgmap:area2poi!=true"
-tourism=wilderness_hut 
-| tourism=alpine_hut 
+tourism=wilderness_hut
+| tourism=alpine_hut
 | building=yes & mkgmap:area2poi!=true
-| building=true & mkgmap:area2poi!=true 
+| building=true & mkgmap:area2poi!=true
 	{name '${name} (${alt_name})'
 	| '${name}'
 	| '${description}'} [0x6402 resolution 24 continue with_actions] #
@@ -511,17 +506,17 @@ tourism=chalet [0x2b00 resolution 24]
 tourism=guest_house [0x2b00 resolution 24]
 tourism=hostel [0x2b02 resolution 24]
 tourism=resort | leisure=resort [0x2b06 resolution 24]
-tourism=hotel | tourism=motel 
+tourism=hotel | tourism=motel
 { name '${name|def:}(${stars}*)${operator|def:}' |
 	'${name} ${operator}' |
 	'${name}' |
 	'${operator}' } [0x2b01 resolution 24]
-tourism=information 
+tourism=information
 	{name '${name} - ${description} (${operator})'|
 	'${name} - (${description})' |
-	'${name}' | 
+	'${name}' |
 	'${description}' |
-	'${operator}' | 
+	'${operator}' |
 	'${ref}'} [0x4c00 resolution 24]
 # tourism=lean_to replaces some uses of amenity=shelter
 tourism=lean_to [0x2b05 resolution 24]
@@ -536,25 +531,25 @@ tourism=wine_cellar | craft=winery [0x2c0a resolution 24]
 tourism=zoo [0x2c07 resolution 24]
 
 # highway=traffic_signals | crossing=traffic_signals [0x0640a resolution 24] # old - 0x1616
-highway=traffic_signals | crossing=traffic_signals [0x03301 resolution 24]
+# highway=traffic_signals | crossing=traffic_signals [0x03301 resolution 24]
 
 railway=level_crossing [0x6400 resolution 24]
 
-#barrier=bollard | barrier=bus_trap {addaccess = no; add bicycle = yes; add foot = yes} [0x660f resolution 24]
-#barrier=block | barrier=cycle_barrier | barrier=stile | barrier=kissing_gate {addaccess = no; add foot = yes} [0x660f resolution 24]
-barrier=bollard | barrier=bus_trap [0x660f resolution 24]
-barrier=block | barrier=cycle_barrier | barrier=stile | barrier=kissing_gate [0x660f resolution 24]
+# barrier=bollard | barrier=bus_trap {addaccess = no; add bicycle = yes; add foot = yes} [0x660f resolution 24]
+# barrier=block | barrier=cycle_barrier | barrier=stile | barrier=kissing_gate {addaccess = no; add foot = yes} [0x660f resolution 24]
+# barrier=bollard | barrier=bus_trap [0x660f resolution 24]
+# barrier=block | barrier=cycle_barrier | barrier=stile | barrier=kissing_gate [0x660f resolution 24]
 barrier=gate | barrier=sliding_gate [0x5801 resolution 24]
 barrier=lift_gate | barrier=toll_booth | barrier=swing_gate [0x5800 resolution 24]
-barrier=log  [0x660f resolution 24]
+# barrier=log  [0x660f resolution 24]
 
 amenity=signpost { name '${label}' } [0x5a00 resolution  21]
 
-traffic_sign=city_limit [0x5600 resolution 21]
-highway=stop [0x5700 resolution 24]
-highway=give_way [0x5701 resolution 24]
+# traffic_sign=city_limit [0x5600 resolution 21]
+# highway=stop [0x5700 resolution 24]
+# highway=give_way [0x5701 resolution 24]
 
-highway=ford | ford=yes | ford=stepping_stones [0x6406 resolution 24]	
+# highway=ford | ford=yes | ford=stepping_stones [0x6406 resolution 24]
 
 ### Добавляем еще разных точек ###
 # Залив, плес
@@ -563,25 +558,25 @@ highway=ford | ford=yes | ford=stepping_stones [0x6406 resolution 24]
 (natural=cape | natural=headland) & place=locality {delete place}
 natural=cape | natural=headland [0x6606 resolution 21]
 # Фонтан
-amenity=fountain [0x11502 resolution 24]
+# amenity=fountain [0x11502 resolution 24]
 # Вход в метро
 #railway=subway_entrance [0x1614 resolution 24]
 railway=subway_entrance [0x11017 resolution 24]
 # бункер, дот
 military=bunker & mkgmap:area2poi!=true [0x640b resolution 24]
 # мосты. пока не работает?
-# bridge=yes [0x6401 resolution 24 continue]
+bridge=yes [0x6401 resolution 24 continue]
 highway=* & bridge=yes | bridge=yes [0x6401 resolution 24 continue]
 
 # маяки
-man_made=lighthouse [0x1600 resolution 19]
+man_made=lighthouse [0x1600 resolution 20]
 
 # госучереждения
 office=government [0x3003 resolution 24]
 
 # Всякие лежачие милиционэры
-traffic_calming=*	[0x11511 resolution 24]
-	
+# traffic_calming=*	[0x11511 resolution 24]
+
 include 'inc/water_points';
 include 'inc/landuse_points';
 

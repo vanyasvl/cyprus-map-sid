@@ -2,33 +2,29 @@
 # Default options for all my maps
 #
 
-# code-page:1252
-# unicode
-# tdbfile
 
+latin1
+tdbfile
 index
 split-name-index
 lower-case
 housenumbers
 route
 drive-on=detect
-# check-roundabouts
 remove-short-arcs
 location-autofill=bounds
 process-destination
 process-exits
 draw-priority=24
-reduce-point-density-polygon=2
+reduce-point-density-polygon=8
 reduce-point-density=4
 order-by-decreasing-area
-# polygon-size-limits="24:12, 22:10, 21:8, 19:4, 18:2, 16:0"
 link-pois-to-ways
 add-pois-to-areas
 process-exits
 process-destination
 remove-ovm-work-files=true
-keep-going
-
-# check-styles
-# generate-sea=extend-sea-sectors,close-gaps=300000,floodblocker
-# precomp-sea=./sea
+check-styles
+gmapi
+gmapsupp
+name-tag-list=name:en,int_name,name
