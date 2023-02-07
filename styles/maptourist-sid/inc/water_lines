@@ -5,13 +5,13 @@ route=ferry & (motorcar=no | motor_vehicle=no) {add mkgmap:ferry=1} [0x1b road_c
 route=ferry {add mkgmap:ferry=1} [0x1b road_class=3 road_speed=0 resolution 18]
 
 ### роутинг по рекам - линия с синими стрелками направления течения на 0-м слое
-(waterway=canal 
-| waterway=river  
-| waterway=rapid | waterway=rapids | whitewater=rapid | whitewater=rapids 
-| waterway=waterfall 
-| waterway=drain  
-| waterway=yes
-| waterway=stream) & tunnel!=* & is_closed()=false {add access=no; add taxi=yes} [0x0f road_class=0 road_speed=0 resolution 24 continue]
+# (waterway=canal
+# | waterway=river
+# | waterway=rapid | waterway=rapids | whitewater=rapid | whitewater=rapids
+# | waterway=waterfall
+# | waterway=drain
+# | waterway=yes
+# | waterway=stream) & tunnel!=* & is_closed()=false {add access=no; add taxi=yes} [0x0f road_class=0 road_speed=0 resolution 24 continue]
 ###
 
 (waterway=river | waterway=canal) & intermittent=yes [0x26 resolution 21]
