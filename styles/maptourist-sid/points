@@ -366,7 +366,7 @@ leisure=beach_resort [0x6604 resolution 24]
 leisure=slipway [0x4700 resolution 24]
 
 man_made=cairn [0x6615 resolution 21]
-man_made=tower | man_made=mast [0x6411 resolution 22]
+man_made=tower | man_made=mast [0x6411 resolution 24]
 man_made=chimney | landmark=chimney [0x1151a resolution 22]
 power=generator & generator:source=wind [0x641a resolution 22]
 man_made=windmill [0x641b resolution 22]
