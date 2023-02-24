@@ -34,11 +34,15 @@ jobs:
         id: date
         run: |
           echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Get latest tag
+        run: |
+          echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
       - name: Publish Release
         uses: ncipollo/release-action@v1
         with:
           artifacts: output/*.zip
           name: Release ${{ env.DATE }}
+          tag: ${{ env.TAG }}
           allowUpdates: true
           replacesArtifacts: true
           body:  |
