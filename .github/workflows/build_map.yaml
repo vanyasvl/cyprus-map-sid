@@ -12,7 +12,7 @@ jobs:
           fetch-depth: 0
       - name: Get tag
         run: |
-          echo "TAG=${git describe --tags}" >> $GITHUB_ENV
+          echo "TAG=$(git describe --tags)" >> $GITHUB_ENV
       - name: Print tag
         run: |
           echo Git ref: $TAG
