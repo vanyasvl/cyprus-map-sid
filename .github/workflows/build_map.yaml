@@ -1,6 +1,7 @@
 ---
 name: build-cyprus-map
 on:
+  push:
   workflow_dispatch:
 jobs:
   build-cyprus-map:
@@ -11,4 +12,4 @@ jobs:
           fetch-depth: 0
       - name: Print tag
         run: |
-          echo $GITHUB_REF
+          echo Git ref: $GITHUB_REF
