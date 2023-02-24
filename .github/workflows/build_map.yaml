@@ -1,11 +1,6 @@
 ---
 name: build-cyprus-map
 on:
-  push:
-    tags:
-      - '*'
-  schedule:
-    - cron: "0 0 * * 0"
   workflow_dispatch:
 jobs:
   build-cyprus-map:
@@ -14,34 +9,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Install build dependencies
+      - name: Print tag
         run: |
-          sudo apt-get install -y wget unzip python3 python3-pip python3-matplotlib python3-numpy python3-bs4 python3-pkg-resources python3-gdal osmium-tool openjdk-18-jre-headless
-          sudo pip3 install -U matplotlib==3.4.3
-          wget -nv http://katze.tfiu.de/projects/phyghtmap/phyghtmap_2.23-1_all.deb -O /tmp/phyghtmap_2.23-1_all.deb
-          sudo dpkg -i /tmp/phyghtmap_2.23-1_all.deb
-          wget -nv https://www.mkgmap.org.uk/download/mkgmap-r4905.zip -O /tmp/mkgmap.zip
-          unzip /tmp/mkgmap.zip -d /tmp
-          mv /tmp/mkgmap-* /tmp/mkgmap
-          wget -nv https://www.thkukuk.de/osm/data/bounds-latest.zip -O /tmp/mkgmap/bounds-latest.zip
-          wget -nv https://www.thkukuk.de/osm/data/sea-latest.zip -O /tmp/mkgmap/sea-latest.zip
-      - name: Build
-        env:
-          USGS_USER: ${{ secrets.USGS_USER }}
-          USGS_PASSWORD: ${{ secrets.USGS_PASSWORD }}
-        run: ./build.sh
-      - name: Get current date
-        id: date
-        run: |
-          echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-      - name: Publish Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: output/*.zip
-          name: Release ${{ env.DATE }}
-          allowUpdates: true
-          replacesArtifacts: true
-          body:  |
-            Files:
-              `Cyprus_OSM.gmap.zip` - for BaseCamp
-              `gmapsupp.img` - for device
+          echo $GITHUB_REF
