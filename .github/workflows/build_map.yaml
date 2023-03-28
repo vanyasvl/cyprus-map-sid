@@ -20,7 +20,7 @@ jobs:
           sudo pip3 install -U matplotlib==3.4.3
           wget -nv http://katze.tfiu.de/projects/phyghtmap/phyghtmap_2.23-1_all.deb -O /tmp/phyghtmap_2.23-1_all.deb
           sudo dpkg -i /tmp/phyghtmap_2.23-1_all.deb
-          wget -nv https://www.mkgmap.org.uk/download/mkgmap-r4905.zip -O /tmp/mkgmap.zip
+          wget -nv https://www.mkgmap.org.uk/download/mkgmap-r4907.zip -O /tmp/mkgmap.zip
           unzip /tmp/mkgmap.zip -d /tmp
           mv /tmp/mkgmap-* /tmp/mkgmap
           wget -nv https://www.thkukuk.de/osm/data/bounds-latest.zip -O /tmp/mkgmap/bounds-latest.zip
