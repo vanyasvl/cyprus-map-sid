@@ -199,7 +199,7 @@ amenity=convention_center [0x3005 resolution 24]
 amenity=community_centre [0x2c09 resolution 24]
 amenity=community_center [0x2c09 resolution 24]
 amenity=courthouse [0x3004 resolution 24]
-amenity=drinking_water | man_made=water_well [0x5000 resolution 24]
+amenity=drinking_water | man_made=water_well | man_made=water_tap [0x5000 resolution 24]
 #amenity=embassy & country=* { set name='${country} ${name|def:}' } [0x3003 resolution 24]
 amenity=embassy & country=* { set name='${name|def:} (${country})' } [0x3003 resolution 24]
 # amenity=embassy & country!=* [0x3003 resolution 24 default_name 'Embassy'] named in language specific inc/name-ru & inc/name-en
