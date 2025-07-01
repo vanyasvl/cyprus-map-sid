@@ -10,6 +10,7 @@ STYLE="maptourist-sid"
 TYP_FILE="typ-sid.txt"
 
 MKGMAP_DIR="${MKGMAP_DIR:-/tmp/mkgmap}"
+SPLITTER_DIR="${SPLITTER_DIR:-/tmp/splitted_map}"
 
 SRTM_URL="https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL1.003/2000.02.11"
 CYPRUS_MAP_URL="https://download.geofabrik.de/europe/cyprus-latest.osm.pbf"
@@ -43,6 +44,29 @@ osmium merge --overwrite ./tmp/contour_*.pbf -o ./tmp/contours.pbf
 echo Cutting contour map
 osmium extract --overwrite --polygon cyprus.poly ./tmp/contours.pbf -o ./tmp/cyprus_contours.pbf
 
+
+echo Split Map
+java -Xmx16G \
+      -jar "${SPLITTER_DIR}/splitter.jar" \
+      --max-nodes=1600000 \
+      --overlap=0 \
+      --output-dir=tmp/splitted \
+      --output=pbf \
+      --keep-complete=true \
+      --no-trim \
+      ./tmp/cyprus.osm.pbf
+
+echo Split Contours
+java -Xmx16G \
+      -jar "${SPLITTER_DIR}/splitter.jar" \
+      --max-nodes=1600000 \
+      --overlap=0 \
+      --output-dir=tmp/splitted_contours \
+      --output=pbf \
+      --keep-complete=true \
+      --no-trim \
+      ./tmp/cyprus_contours.pbf
+
 echo Building map
 java -Xmx3G -jar "${MKGMAP_DIR}/mkgmap.jar" --verbose --max-jobs=2 --output-dir="./output" \
       --precomp-sea="${MKGMAP_DIR}/sea-latest.zip" --bounds="${MKGMAP_DIR}/bounds-latest.zip" \
@@ -54,9 +78,9 @@ java -Xmx3G -jar "${MKGMAP_DIR}/mkgmap.jar" --verbose --max-jobs=2 --output-dir=
       --drive-on=left \
       --dem="./tmp" --dem-poly=cyprus.poly \
       --dem-dists=3312,13248,26512,53024 \
-      "./tmp/cyprus.osm.pbf" "$TYP_FILE" \
+      -c tmp/splitted/template.args "$TYP_FILE" \
       --transparent --merge-lines --draw-priority=28 \
-      "./tmp/cyprus_contours.pbf"
+      -c tmp/splitted_contours/.args
 
 echo Compressing maps
 cd ./output
