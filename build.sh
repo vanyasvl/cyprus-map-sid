@@ -10,6 +10,7 @@ STYLE="maptourist-sid"
 TYP_FILE="typ-sid.txt"
 
 MKGMAP_DIR="${MKGMAP_DIR:-/tmp/mkgmap}"
+SPLITTER_DIR="${SPLITTER_DIR:-/tmp/splitter}"
 
 SRTM_URL="https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL1.003/2000.02.11"
 CYPRUS_MAP_URL="https://download.geofabrik.de/europe/cyprus-latest.osm.pbf"
@@ -18,6 +19,13 @@ mkdir -p tmp output srtm_downloads
 
 echo Downloading Cyprus map
 wget -nv -q "$CYPRUS_MAP_URL" -O "tmp/cyprus.osm.pbf"
+
+echo Splitting Cyprus map into tiles
+java -Xmx4G -jar "${SPLITTER_DIR}/splitter.jar" \
+  --output-dir=tmp/split \
+  --mapid=${MAPNAME} \
+  --max-nodes=1600000 \
+  tmp/cyprus.osm.pbf
 
 echo Downloading srtm files
 wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E032.SRTMGL1.hgt.zip" -O "srtm_downloads/N34E032.SRTMGL1.hgt.zip"
@@ -54,7 +62,7 @@ java -Xmx3G -jar "${MKGMAP_DIR}/mkgmap.jar" --verbose --max-jobs=2 --output-dir=
       --drive-on=left \
       --dem="./tmp" --dem-poly=cyprus.poly \
       --dem-dists=3312,13248,26512,53024 \
-      "./tmp/cyprus.osm.pbf" "$TYP_FILE" \
+      --read-config=tmp/split/template.args "$TYP_FILE" \
       --transparent --merge-lines --draw-priority=28 \
       "./tmp/cyprus_contours.pbf"
 
