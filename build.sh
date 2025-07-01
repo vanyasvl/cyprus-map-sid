@@ -80,7 +80,7 @@ java -Xmx3G -jar "${MKGMAP_DIR}/mkgmap.jar" --verbose --max-jobs=2 --output-dir=
       --dem-dists=3312,13248,26512,53024 \
       -c tmp/splitted/template.args "$TYP_FILE" \
       --transparent --merge-lines --draw-priority=28 \
-      -c tmp/splitted_contours/.args
+      -c tmp/splitted_contours/template.args
 
 echo Compressing maps
 cd ./output
