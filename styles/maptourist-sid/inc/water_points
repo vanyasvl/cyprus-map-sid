@@ -4,7 +4,7 @@ landuse=basin | landuse=reservoir [0x650f resolution 21]
 
 natural=beach & surface!=stone [0x6604 resolution 24]
 natural=glacier & name=* [0x650a resolution 21]
-natural=spring [0x6511 resolution 21]
+natural=spring [0x6511 resolution 16-24]
 natural=hot_spring [0x5400 resolution 21]
 natural=geyser & amenity!=fountain [0x6509 resolution 21]
 # natural=stream [0x6512 resolution 21]
