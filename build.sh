@@ -39,13 +39,13 @@ echo Unpacking srtm files
 unzip -q -o "srtm_downloads/*.zip" -d "./tmp"
 
 echo Building contour lines
-cd ./tmp
+#cd ./tmp
 #python3 -m pyhgtmap --step=20 --line-cat=400,50 --pbf \
 #      --output-prefix=contour \
 #      --no-zero-contour \
 #      --srtm-version=3.0 ./*.hgt
 python3 build_contours.py
-cd -
+#cd -
 
 echo Merging contour maps
 osmium merge --overwrite ./tmp/contour_*.pbf -o ./tmp/contours.pbf
