@@ -40,11 +40,6 @@ unzip -q -o "srtm_downloads/*.zip" -d "./tmp"
 
 echo Building contour lines
 cd ./tmp
-#python3 -m pyhgtmap --step=20 --line-cat=400,50 --pbf \
-#      --output-prefix=contour \
-#      --no-zero-contour \
-#      --srtm-version=3.0 ./*.hgt
-#python3 build_contours.py
 pyhgtmap --step=20 --pbf --output-prefix=contour --no-zero-contour --srtm-version=3.0 ./*.hgt
 cd -
 
