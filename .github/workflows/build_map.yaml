@@ -21,11 +21,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get install -y wget unzip python3 python3-pip python3-numpy python3-bs4 python3-pkg-resources python3-gdal osmium-tool openjdk-18-jre-headless libfreetype6-dev libpng-dev
-          # sudo pip3 install -U matplotlib==3.4.3 phyghtmap
-          sudo pip3 install -U matplotlib
-          sudo pip3 install pyhgtmap
-          #wget -nv http://katze.tfiu.de/projects/phyghtmap/phyghtmap_2.23-1_all.deb -O /tmp/phyghtmap_2.23-1_all.deb
-          #sudo dpkg -i /tmp/phyghtmap_2.23-1_all.deb
+          sudo pip3 install -U matplotlib pyhgtmap
           wget -nv https://www.mkgmap.org.uk/download/mkgmap-latest.zip -O /tmp/mkgmap.zip
           wget -nv https://www.mkgmap.org.uk/download/splitter-latest.zip  -O /tmp/splitter.zip
           unzip /tmp/mkgmap.zip -d /tmp
