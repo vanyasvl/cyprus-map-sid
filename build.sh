@@ -35,10 +35,10 @@ java -Xmx4G -jar "${SPLITTER_DIR}/splitter.jar" \
 #wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E032.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E032.SRTMGL1.hgt.zip"
 #wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E033.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E033.SRTMGL1.hgt.zip"
 #wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E034.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E034.SRTMGL1.hgt.zip"
-
-#echo Unpacking srtm files
-#unzip -q -o "srtm_downloads/*.zip" -d "./tmp"
 #xaa END - no need to download, files are stored locally
+
+echo Unpacking srtm files
+unzip -q -o "SRTM_data/*.zip" -d "./tmp"
 
 echo Building contour lines
 cd ./tmp

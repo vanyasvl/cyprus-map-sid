@@ -30,16 +30,7 @@ jobs:
           mv /tmp/splitter-* /tmp/splitter
           wget -nv https://www.thkukuk.de/osm/data/bounds-latest.zip -O /tmp/mkgmap/bounds-latest.zip
           wget -nv https://www.thkukuk.de/osm/data/sea-latest.zip -O /tmp/mkgmap/sea-latest.zip
-      # --- xaa - copy local SRTM files ---
-      - name: Prepare SRTM data
-        run: |
-          # Создаем папку tmp в текущей директории (если её нет)
-          mkdir -p tmp
-          # Копируем zip файлы из папки репозитория в папку tmp
-          cp SRTM_data/*.zip tmp/
-          # Выводим список для проверки в логах
-          echo "Files in tmp:"
-          ls -l tmp/      - name: Build
+      - name: Build
         env:
           USGS_USER: ${{ secrets.USGS_USER }}
           USGS_PASSWORD: ${{ secrets.USGS_PASSWORD }}
