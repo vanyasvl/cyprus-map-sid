@@ -27,20 +27,22 @@ java -Xmx4G -jar "${SPLITTER_DIR}/splitter.jar" \
   --max-nodes=1600000 \
   tmp/cyprus.osm.pbf
 
-echo Downloading srtm files
-wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E032.SRTMGL1.hgt.zip" -O "srtm_downloads/N34E032.SRTMGL1.hgt.zip"
-wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E033.SRTMGL1.hgt.zip" -O "srtm_downloads/N34E033.SRTMGL1.hgt.zip"
-wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E034.SRTMGL1.hgt.zip" -O "srtm_downloads/N34E034.SRTMGL1.hgt.zip"
-wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E032.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E032.SRTMGL1.hgt.zip"
-wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E033.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E033.SRTMGL1.hgt.zip"
-wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E034.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E034.SRTMGL1.hgt.zip"
+#xaa BEGIN - no need to download, files are stored locally
+#echo Downloading srtm files
+#wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E032.SRTMGL1.hgt.zip" -O "srtm_downloads/N34E032.SRTMGL1.hgt.zip"
+#wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E033.SRTMGL1.hgt.zip" -O "srtm_downloads/N34E033.SRTMGL1.hgt.zip"
+#wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N34E034.SRTMGL1.hgt.zip" -O "srtm_downloads/N34E034.SRTMGL1.hgt.zip"
+#wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E032.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E032.SRTMGL1.hgt.zip"
+#wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E033.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E033.SRTMGL1.hgt.zip"
+#wget -nv -q -c --user "$USGS_USER" --password "$USGS_PASSWORD" "$SRTM_URL/N35E034.SRTMGL1.hgt.zip" -O "srtm_downloads/N35E034.SRTMGL1.hgt.zip"
+#xaa END - no need to download, files are stored locally
 
 echo Unpacking srtm files
-unzip -q -o "srtm_downloads/*.zip" -d "./tmp"
+unzip -q -o "SRTM_data/*.zip" -d "./tmp"
 
 echo Building contour lines
 cd ./tmp
-pyhgtmap --step=20 --pbf --output-prefix=contour --no-zero-contour --srtm-version=3.0 ./*.hgt
+pyhgtmap --step=20 --pbf --output-prefix=contour --no-zero-contour ./*.hgt
 cd -
 
 echo Merging contour maps
