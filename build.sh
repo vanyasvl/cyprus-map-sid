@@ -42,7 +42,7 @@ unzip -q -o "SRTM_data/*.zip" -d "./tmp"
 
 echo Building contour lines
 cd ./tmp
-pyhgtmap --step=20 --pbf --output-prefix=contour --no-zero-contour --srtm-version=3.0 ./*.hgt
+pyhgtmap --step=20 --pbf --output-prefix=contour --no-zero-contour ./*.hgt
 cd -
 
 echo Merging contour maps
