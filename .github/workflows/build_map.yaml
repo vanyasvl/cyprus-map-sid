@@ -30,11 +30,23 @@ jobs:
           mv /tmp/splitter-* /tmp/splitter
           wget -nv https://www.thkukuk.de/osm/data/bounds-latest.zip -O /tmp/mkgmap/bounds-latest.zip
           wget -nv https://www.thkukuk.de/osm/data/sea-latest.zip -O /tmp/mkgmap/sea-latest.zip
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install Python packages
+        run: |
+          python -m venv venv39
+          source venv39/bin/activate
+          pip install --upgrade pip
+          pip install matplotlib pyhgtmap          
       - name: Build
         env:
           USGS_USER: ${{ secrets.USGS_USER }}
           USGS_PASSWORD: ${{ secrets.USGS_PASSWORD }}
-        run: ./build.sh
+        run: |
+          source ./venv39/bin/activate
+          ./build.sh
       - name: Get current date
         id: date
         run: |
